@@ -8,6 +8,7 @@ import CartTotals from './CartTotals'
 import EmptyCart from './EmptyCart'
 
 
+
 class Cart extends React.Component {
   constructor(props) {
     super(props);
@@ -27,7 +28,7 @@ class Cart extends React.Component {
                   <Title name="Your" title="Cart"></Title>
                   <CartColumns/>
                   <CartList value={value}/>
-                  <CartTotals value={value}/>
+                  <CartTotals value={value} history={this.props.history}/>
                 </React.Fragment>
               )
             )
