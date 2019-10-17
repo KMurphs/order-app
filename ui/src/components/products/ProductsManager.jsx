@@ -1,11 +1,12 @@
 import React from 'react';
-import SupplierForm from './SupplierForm';
+import ProductForm from '../products/ProductForm';
+
 
 const SupplierManager = (props) => {
   return ( 
     <div className="container-fluid container-page">
       <React.Fragment>
-        <SupplierForm/>
+        <ProductForm/>
       </React.Fragment>
     </div>
   );

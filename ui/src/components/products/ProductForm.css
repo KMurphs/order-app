@@ -153,6 +153,10 @@
     margin-left: 0.8em;
 }
 
+.product-form .product-tag:hover {
+    background-color: #ccc !important;
+}
+
 .product-form .product-tag input {
     width: 0;
     opacity: 0;
