@@ -24,13 +24,15 @@ const app = express()
 // app.use(bodyParser.json());
 
 
-app.use(express.static(__dirname + '/ui/build'))
-app.use(express.static(__dirname + '/public'))
+
 app.use((req, res, next) => {
 	// console.log(req)
 	console.log(`Server received '${req.method}' request at url '${req.url}' with parameters '${JSON.stringify(req.params)}' and body '${JSON.stringify(req.body)}'`)
 	next()
 })
+app.use(express.static(__dirname + '/ui/build'))
+app.use(express.static(__dirname + '/public'))
+
 
 app.get("/", (req, res) => {
 	res.redirect('/index.html')
@@ -47,7 +49,7 @@ app.get('/api/clients', (req, res) => {
 
 app.post('/api/clients', (req, res) => {
 	const form = new formidable.IncomingForm()
-	form.parse(req, (err, fields, files) => {
+	form.parse(req, async(err, fields, files) => {
 		if(err){
 			console.log(err)
 			return
@@ -69,28 +71,33 @@ app.post('/api/clients', (req, res) => {
 	  	console.log(`Reading serverData file`)
 		let imgAbsDir = (`${imgBaseDir}\\${imgRelDir}`).replace('\\\\', '\\') // DEfault value unless we find out that there is a valid folder for the newly uploaded image
 		let serverData = {}
-		fs.readFile('serverData.json', (err, data) => {
-			if (err) {console.log(err)};
+		await new Promise((resolve, reject) => {
 
-			try{
+			fs.readFile('serverData.json', (err, data) => {
+				if (err) {reject(err)};
 
-				serverData = JSON.parse(data)
-				fs.readdir(serverData.imgCurrentAbsDir, (err, files) => {
-					if(err) {console.log(err)}
+				try{
 
-					// If nuber of images in that folder is less than maximum allowed, use this to save the newly uploaded image
-					console.log(`Current Img Folder ${serverData.imgCurrentAbsDir} has ${files.length} files (Max Allowed ${imgDirMaxFiles})`)
-					if(files.length < imgDirMaxFiles){
-						imgAbsDir = serverData.imgCurrentAbsDir
-					}
+					serverData = JSON.parse(data)
+					fs.readdir(serverData.imgCurrentAbsDir, (err, files) => {
+						if(err) {reject(err)}
 
-				});
+						// If nuber of images in that folder is less than maximum allowed, use this to save the newly uploaded image
+						console.log(`Current Img Folder ${serverData.imgCurrentAbsDir} has ${files.length} files (Max Allowed ${imgDirMaxFiles})`)
+						if(files.length < imgDirMaxFiles){
+							imgAbsDir = serverData.imgCurrentAbsDir
+							resolve(imgAbsDir)
+						}
 
-			}catch(exception){
-				console.log(exception)
-			}
+					});
 
-		});
+				}catch(exception){
+					reject(exception)
+				}
+
+			});			
+		})
+
 
 
 		
@@ -112,7 +119,7 @@ app.post('/api/clients', (req, res) => {
 		const imgUploadTempPath = files.img_path.path;
 		const imgTempName = files.img_path.name === 'NoImage.png' ? files.img_path.name : `${Date.now()}${files.img_path.name.match(new RegExp(/(\.[a-z]{2,4}$)/))[0]}`
 		console.log(`Uploaded image will be saved in ${imgAbsDir} as ${imgTempName}`)
-		model.clients_add_one(fields.surname, fields.firstnames, fields.email.split('::'), fields.phone.split('::'), imgAbsDir, imgTempName, fields.country, fields.address, fields.address)
+		model.clients_add_one(fields.surname, fields.firstnames, fields.email.split('::'), fields.phone.split('::'), imgAbsDir.replace(imgBaseDir, ''), imgTempName, fields.country, fields.address, fields.address)
 		.then((data)=>{ 
 			
 			console.log(data)
@@ -120,10 +127,12 @@ app.post('/api/clients', (req, res) => {
 			try{
 
 	      		if(files.img_path.name !== 'NoImage.png'){
-		      		fs.rename(imgUploadTempPath, (`${data[0].img_path}`).replace('\\\\', '\\'), function (err) {
+	      			console.log(`Moving Img from temporary folder to ${imgBaseDir}\\${data[0].img_path}`.replace('\\\\', '\\'))
+		      		fs.rename(imgUploadTempPath, (`${imgBaseDir}\\${data[0].img_path}`).replace('\\\\', '\\'), (err) => {
 		        		if (err) res.status(500).json(err)
-		        		res.write('File uploaded and moved!');
-		        		res.status(200).json(data)
+		        		console.log('File uploaded and moved!');
+		        		//'\\20190920\\6ea9ab1ba_1571597844807.jpeg'.split('\\').reverse()[0]
+		        		res.status(200).json(data[0])
 		      		});	
 	      		}else{
 	      			res.status(200).json(data)

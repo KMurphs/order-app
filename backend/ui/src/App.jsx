@@ -18,7 +18,7 @@ function App() {
   const [isOnline, setIsOnline] = useState(true)
 
   if(timerID === null){ setTimerID(setInterval(()=>pingServer(setIsOnline), 5000)); }
-
+  console.log(`Public URL is ${process.env.PUBLIC_URL}`)
   return (
     <React.Fragment>
       <NavBar isOnline={isOnline}></NavBar>
