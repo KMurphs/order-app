@@ -10,12 +10,15 @@ const ClientsManager = (props) => {
   const [isClientListRetrieved, setIsClientListRetrieved] = useState(false)
   const [clientFormData, setClientFormData] = useState({})
 
+  console.log(process.env.REACT_APP_BASE_URL);
 
   // Get Client List if not already present 
   if(!isClientListRetrieved){
-
-    (new window.XmlHttpRequest()).getData('http://localhost:5000/api/clients', {})
+    
+    (new window.XmlHttpRequest()).getData(`${process.env.REACT_APP_BASE_URL}/api/clients`, {})
     .then((res) => {
+      res.forEach(item => item.img_path = `${process.env.REACT_APP_BASE_URL}${item.img_path.replace(/\\\\/g,'/')}`)
+      console.log(res)
       reduxStore.dispatch(reduxLoadClients(res)); // store retrieved client data
       setIsClientListRetrieved(true); // Force a re-render with retrieved client data
       // console.log(reduxStore.getState().clients)

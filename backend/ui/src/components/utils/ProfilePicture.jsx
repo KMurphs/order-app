@@ -8,7 +8,7 @@ const ProfilePicture = (props) => {
 
   return ( 
       <div className="input-group mb-3 d-flex flex-column">
-        <img src={getRenderImgPathFromCurrentProps(props.formData.img_path) || "/img/NoImage.png"} alt="No Picture Provided" className="img-thumbnail"></img>
+        <img src={getRenderImgPathFromCurrentProps(props.formData.img_path) || "/imgs/NoImage.png"} alt="No Picture Provided" className="img-thumbnail"></img>
         <div className="custom-file">
           <input type="file" 
                  className="custom-file-input" 

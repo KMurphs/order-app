@@ -24,12 +24,18 @@ const ClientForm = (props) => {
                          onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
       <SurnameFirstnames formType={formType} 
                          formData={{surname: renderData.surname, firstnames: renderData.firstnames}}
+                         formRequired={{surname: true, firstnames: false}}
+                         formDisabled={{surname: false, firstnames: false}}
                          onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
       <EmailPhoneWebsite formType={formType} 
                          formData={{email: renderData.email, phone: renderData.phone, website: renderData.website}}
+                         formRequired={{email: false, phone: true, website: false}}
+                         formDisabled={{email: false, phone: false, website: true}}
                          onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
       <AddressCountry    formType={formType} 
                          formData={{address: renderData.shipping_address, country: renderData.country}}
+                         formRequired={{address: true, country: true}}
+                         formDisabled={{address: false, country: false}}
                          onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey==='address'?'shipping_address':owningKey, newValue)}/>
       <button type="submit" className="btn btn-primary btn-block">Submit</button>
     </form>
