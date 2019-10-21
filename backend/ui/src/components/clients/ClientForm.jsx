@@ -16,7 +16,7 @@ const ClientForm = (props) => {
   let renderData = getRenderDataFromCurrentProps(props.clientData)
 
   return ( 
-    <form className={`order-app-form ${formType}-form`} id='client-form' encType="multipart/form-data" action="http://localhost:5000/clients" method="POST">
+    <form className={`order-app-form ${formType}-form`} id='client-form' onSubmit={(e)=>handleSubmit(e, renderData)} encType="multipart/form-data" action={`${process.env.REACT_APP_BASE_URL}/clients`} /*method="POST"*/>
       <h3 className="display-4">{formType.charAt(0).toUpperCase() + formType.slice(1)} Details</h3>
       <br/>
       {/* <input type="text" name="user[name]"/> */}
@@ -43,3 +43,41 @@ const ClientForm = (props) => {
 }
  
 export default ClientForm;
+
+
+
+const handleSubmit = (evt, data)=>{
+  evt.preventDefault();
+  // console.log(evt)
+  // console.log(evt.target)
+  // console.log(evt.target.id)
+  // // evt.stopPropagation();
+
+  // var formData = new FormData(evt.target);
+
+  // (new window.XmlHttpRequest()).postData(evt.target.getAttribute('action'), formData)
+  // .then((res) => {
+  //   // console.log(reduxStore.getState().clients)
+  // })
+
+  (new window.XmlHttpRequest()).postFormData(evt.target.getAttribute('action'), evt.target)
+  .then((res) => {
+    console.log(res)
+  })
+
+
+
+
+
+
+
+
+
+
+
+  if(data.id){
+    console.info(`Updating client data with id ${data.id}`);
+  }else{
+    console.info(`Uploading new client data`);
+  }
+}

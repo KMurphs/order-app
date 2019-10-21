@@ -10,7 +10,6 @@ const ClientsManager = (props) => {
   const [isClientListRetrieved, setIsClientListRetrieved] = useState(false)
   const [clientFormData, setClientFormData] = useState({})
 
-  console.log(process.env.REACT_APP_BASE_URL);
 
   // Get Client List if not already present 
   if(!isClientListRetrieved){

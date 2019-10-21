@@ -42,3 +42,34 @@ XmlHttpRequest.prototype.postData = function(url, data) {
         xhttp.send(data);
     })
 }
+
+
+XmlHttpRequest.prototype.postFormData = function(url, htmlForm) {
+    return new Promise((resolve) => {
+        let formData = new FormData(htmlForm);
+        let xhr = new XMLHttpRequest();
+
+        let onProgress = function(e) {
+            if (e.lengthComputable) {
+                let percentComplete = (e.loaded / e.total) * 100;
+            }
+        };
+
+        let onReady = function(e) {
+            // ready state
+            resolve(JSON.parse('Form uploaded successfully'));
+        };
+
+        let onError = function(err) {
+            // something went wrong with upload
+            reject(err)
+        };
+
+        // formData.append('files', file);
+        xhr.open('post', url, true);
+        xhr.addEventListener('error', onError, false);
+        xhr.addEventListener('progress', onProgress, false);
+        xhr.send(formData);
+        xhr.addEventListener('readystatechange', onReady, false);
+    })
+}

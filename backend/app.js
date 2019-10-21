@@ -23,18 +23,22 @@ const app = express()
 //  * and exposes the resulting object (containing the keys and values) on req.body
  
 app.use(bodyParser.urlencoded({
-    extended: true
+    limit: '50mb',
+    extended: true,
+    parameterLimit: 50000
 }));
 
 // /**bodyParser.json(options)
 //  * Parses the text as JSON and exposes the resulting object on req.body.
 //  */
-app.use(bodyParser.json());
+app.use(bodyParser.json({
+	limit: '50mb'
+}));
 
 
 app.use((req, res, next) => {
 	if(req.url !== '/ping'){
-		console.log(`Server received '${req.method}' request at url '${req.url}' with parameters '${JSON.stringify(req.params)}' and body '${JSON.stringify(req.body)}'`)
+		console.log(`Server received '${req.method}' request at url '${req.url}' with parameters '${JSON.stringify(req.params)}' and body '${JSON.stringify(req.body).substr(0, 200)}'`)
 	}
 	next()
 })
@@ -100,6 +104,11 @@ const reactRedirects = (res)=>{
     return res.send(data.replace('<div id="root"></div>', `<div id="root" style='color: rgba(0,0,0,0)'>${app}</div>`))
   });
 }
+
+
+
+
+
 
 
 
