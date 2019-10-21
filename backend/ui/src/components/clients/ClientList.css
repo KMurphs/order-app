@@ -71,4 +71,6 @@
 
 .client-list .client-list-item img {
     height: 5em;
+    width: 5em;
+    object-fit: cover;
 }

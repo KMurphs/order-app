@@ -16,7 +16,7 @@ const ClientForm = (props) => {
   let renderData = getRenderDataFromCurrentProps(props.clientData)
 
   return ( 
-    <form className={`order-app-form ${formType}-form`} id='client-form' encType="multipart/form-data" action="http://localhost:5000/api/clients" method="POST">
+    <form className={`order-app-form ${formType}-form`} id='client-form' encType="multipart/form-data" action="http://localhost:5000/clients" method="POST">
       <h3 className="display-4">{formType.charAt(0).toUpperCase() + formType.slice(1)} Details</h3>
       <br/>
       {/* <input type="text" name="user[name]"/> */}

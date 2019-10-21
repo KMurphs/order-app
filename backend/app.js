@@ -2,6 +2,10 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const formidable = require('formidable')
 const fs = require('fs')
+const path = require('path')
+
+const { StaticRouter } = require("react-router-dom");
+const ReactDOMServer = require('react-dom/server');
 
 const model = require('./model');
 let config = require('./config')
@@ -72,7 +76,39 @@ app.get('/api/clients', (req, res) => {
 	.catch((err)=>res.status(500).json(err))
 })
 
-app.post('/api/clients', (req, res) => {
+
+
+
+
+
+
+app.get('/clients', (req, res) => {
+	return reactRedirects(res);
+});
+// https://www.freecodecamp.org/news/demystifying-reacts-server-side-render-de335d408fe4/
+// https://alligator.io/react/server-side-rendering/
+const reactRedirects = (res)=>{
+  const app = ReactDOMServer.renderToString('<App />');
+
+  const indexFile = path.resolve(__dirname + '/ui/build/index.html');
+  fs.readFile(indexFile, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Something went wrong:', err);
+      return res.status(500).send('Oops, better luck next time!');
+    }
+
+    return res.send(data.replace('<div id="root"></div>', `<div id="root" style='color: rgba(0,0,0,0)'>${app}</div>`))
+  });
+}
+
+
+
+
+
+
+
+
+app.post('/clients', (req, res) => {
 	const form = new formidable.IncomingForm()
 	form.parse(req, async(err, fields, files) => {
 		if(err){
@@ -94,7 +130,7 @@ app.post('/api/clients', (req, res) => {
 				if(err) {reject(err)}
 
 				// If nuber of images in that folder is less than maximum allowed, use this to save the newly uploaded image
-				console.log(`Current Img Folder ${serverData.imgCurrentAbsDir} has ${files.length} files (Max Allowed ${config.serverData.imgDirMaxFiles})`)
+				console.log(`Current Img Folder ${config.serverData.imgCurrentAbsDir} has ${files.length} files (Max Allowed ${config.serverData.imgDirMaxFiles})`)
 				if(files.length < config.serverData.imgDirMaxFiles){
 					imgAbsDir = config.serverData.imgCurrentAbsDir
 					resolve(imgAbsDir)
@@ -132,23 +168,23 @@ app.post('/api/clients', (req, res) => {
 		      		fs.rename(imgUploadTempPath, (`${config.serverData.imgBaseDir}\\${data[0].img_path}`).replace('\\\\', '\\').replace(/\//g, '\\').replace('\\\\', '\\').replace('\\imgs\\', '\\'), (err) => {
 		        		if (err) res.status(500).json(err)
 		        		console.log('File uploaded and moved!');
-		        		//'\\20190920\\6ea9ab1ba_1571597844807.jpeg'.split('\\').reverse()[0]
-		        		res.status(200).json(data[0])
+		        		res.redirect('/clients')
 		      		});	
 	      		}else{
-	      			res.status(200).json(data)
+	      			res.redirect('/clients')
 	      		}
 	      	
 	      	}catch(exception){
-	      		res.status(500).json(err)
+	      		res.redirect('/clients')
 	      	}
 			
 		})
-		.catch((err)=>res.status(500).json(err))
+		.catch((err)=>res.redirect('/clients'))
 	})
 })
 
 app.get('/*', (req, res) => {
+
 	res.status(200).json({
 		'msg':'Hello from backend'
 	})
