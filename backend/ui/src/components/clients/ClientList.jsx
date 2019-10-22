@@ -23,17 +23,17 @@ const ClientList = (props) => {
               <li key={index + 1} 
                 className={`list-group-item list-group-item-action client-list-item ${activeItemIndex === index+1 ? 'list-group-item-primary' : '' }`} 
                 onClick={()=>{setActiveItemIndex(index + 1); props.onSelectionChange(props.list[index])}}>
-
-                  <div className='img-container'>
-                    <img src={props.list[index].img_path || "/img/NoImage.png"} alt="No Picture Provided" className="img-thumbnail"></img>
-                  </div>
-                  <div>
-                    <span className='client-list-text-primary'>{props.list[index].surname}&nbsp;<span className='client-list-text-secondary'><span className='d-inline d-md-none'><br/></span>{props.list[index].firstnames}</span><br/></span>
-                    <span className='client-list-text-secondary d-none d-md-inline'><span className='client-list-text-disabled'>Phone: </span>{props.list[index].phone}<br/></span>
-                    <span className='client-list-text-secondary d-none d-md-inline'><span className='client-list-text-disabled'>Email: </span>{props.list[index].email}<br/></span>
-                    <span className='client-list-text-secondary d-none d-md-inline'><span className='client-list-text-disabled'>Country: </span>{props.list[index].country}</span>
-                  </div>
-
+                  <a href="#client-form" className='client-list-item-linkbox'>
+                    <div className='img-container'>
+                      <img src={props.list[index].img_path || "/img/NoImage.png"} alt={`Showing some ${props.formType}`} className="img-thumbnail"></img>
+                    </div>
+                    <div>
+                      <span className='client-list-text-primary'>{props.list[index].surname}&nbsp;<span className='client-list-text-secondary'><span className='d-inline d-md-none'><br/></span>{props.list[index].firstnames}</span><br/></span>
+                      <span className='client-list-text-secondary d-none d-md-inline'><span className='client-list-text-disabled'>Phone: </span>{props.list[index].phone}<br/></span>
+                      <span className='client-list-text-secondary d-none d-md-inline'><span className='client-list-text-disabled'>Email: </span>{props.list[index].email}<br/></span>
+                      <span className='client-list-text-secondary d-none d-md-inline'><span className='client-list-text-disabled'>Country: </span>{props.list[index].country}</span>
+                    </div>
+                  </a>
               </li>
             )
           })

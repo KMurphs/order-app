@@ -10,7 +10,7 @@ const ReactDOMServer = require('react-dom/server');
 const model = require('./model');
 let config = require('./config')
 config.getServerData().then((serverData)=>{config = {...config, ...{serverData}};console.log(config)})
-
+const {imgUtilGetDBDir, imgUtilGetTempPathAndNameFromFormidable, imgUtilMoveImgToDBFromFormidable} = require('./imgUtils');
 
 const app = express()
 
@@ -101,7 +101,7 @@ const reactRedirects = (res)=>{
       return res.status(500).send('Oops, better luck next time!');
     }
 
-    return res.send(data.replace('<div id="root"></div>', `<div id="root" style='color: rgba(0,0,0,0)'>${app}</div>`))
+    return res.send(data.replace('<div id="root"></div>', `<div id="root" /*style='color: rgba(0,0,0,0)*/'>${app}</div>`))
   });
 }
 
@@ -110,14 +110,8 @@ const reactRedirects = (res)=>{
 
 
 
+app.put('/clients/:id', (req, res) => {
 
-
-
-
-
-
-
-app.post('/clients', (req, res) => {
 	const form = new formidable.IncomingForm()
 	form.parse(req, async(err, fields, files) => {
 		if(err){
@@ -126,71 +120,70 @@ app.post('/clients', (req, res) => {
 		}
 
 
-		// Getting folder where to save this image
-	  	const padValueWithZeros = (value, stringWidth) => (value/Math.pow(10,stringWidth)).toFixed(stringWidth).split('.')[1]; // ("00" + 1234).slice(-3) gives 234
-	  	const imgRelDir = `\\${new Date().getFullYear()}${padValueWithZeros(new Date().getMonth(), 2)}${padValueWithZeros(new Date().getDate(), 2)}`
 
-	  	// Try Reading serverData file with last folder for uploaded images
-		let imgAbsDir = (`${config.serverData.imgBaseDir}\\${imgRelDir}`).replace(/\\\\/g, '\\').replace(/\\\\/g, '\\') // DEfault value unless we find out that there is a valid folder for the newly uploaded image
-
-		await new Promise((resolve, reject) => {
-
-			fs.readdir(config.serverData.imgCurrentAbsDir, (err, files) => {
-				if(err) {reject(err)}
-
-				// If nuber of images in that folder is less than maximum allowed, use this to save the newly uploaded image
-				console.log(`Current Img Folder ${config.serverData.imgCurrentAbsDir} has ${files.length} files (Max Allowed ${config.serverData.imgDirMaxFiles})`)
-				if(files.length < config.serverData.imgDirMaxFiles){
-					imgAbsDir = config.serverData.imgCurrentAbsDir
-					resolve(imgAbsDir)
-				}
-
-			});		
-
-		}).catch((err)=>console.log(`Error while reading files in ${config.serverData.imgCurrentAbsDir}: `, err))
-
-
-	
-		
-		// If new folder, create it
-		if (!fs.existsSync(imgAbsDir)){
-			console.log(`Creating folder ${imgAbsDir}, and store in serverData`)
-		    fs.mkdirSync(imgAbsDir);
-		    config.serverData.imgCurrentAbsDir = imgAbsDir
-		    config.saveServerData(config.serverData).catch((err)=>console.log('Error while saving serverData: ', err))
+		const [imgUploadTempPath, imgTempName] = imgUtilGetTempPathAndNameFromFormidable(files)
+		let imgCurrentAbsDir, folderAlreadyExisted
+		await imgUtilGetDBDir(config.serverData.imgBaseDir, config.serverData.imgCurrentAbsDir, config.serverData.imgDirMaxFiles).then((res)=> [imgCurrentAbsDir, folderAlreadyExisted] = res)
+		if(folderAlreadyExisted){
+			config.serverData.imgCurrentAbsDir = imgCurrentAbsDir
+			// config.saveServerData(config.serverData).catch((err)=>console.log('Error while saving serverData: ', err))			
 		}
 
 
 
-		const imgUploadTempPath = files.img_path.path;
-		const imgTempName = files.img_path.name === 'NoImage.png' ? files.img_path.name : `${Date.now()}${files.img_path.name.match(new RegExp(/(\.[a-z]{2,4}$)/))[0]}`
-		console.log(`Uploaded image will be saved in ${imgAbsDir} as ${imgTempName}`)
-		model.clients_add_one(fields.surname, fields.firstnames, fields.email.split('::'), fields.phone.split('::'), `/imgs/${imgAbsDir.replace(config.serverData.imgBaseDir, '')}`, imgTempName, fields.country, fields.address, fields.address)
+		const clientId = fields.id
+		delete fields.id
+
+
+		model.clients_update_one_by_id(clientId, Object.keys(fields), Object.values(fields))
 		.then((data)=>{ 
 			
-			console.log(data)
-
-			try{
-
-	      		if(files.img_path.name !== 'NoImage.png'){
-	      			console.log(`Moving Img from temporary folder to ${config.serverData.imgBaseDir}\\${data[0].img_path}`.replace('\\\\', '\\').replace(/\//g, '\\').replace('\\\\', '\\').replace('\\imgs\\', '\\'))
-		      		fs.rename(imgUploadTempPath, (`${config.serverData.imgBaseDir}\\${data[0].img_path}`).replace('\\\\', '\\').replace(/\//g, '\\').replace('\\\\', '\\').replace('\\imgs\\', '\\'), (err) => {
-		        		if (err) res.status(500).json(err)
-		        		console.log('File uploaded and moved!');
-		        		res.redirect('/clients')
-		      		});	
-	      		}else{
-	      			res.redirect('/clients')
-	      		}
-	      	
-	      	}catch(exception){
-	      		res.redirect('/clients')
-	      	}
+			console.log('Updated Item: ', data)
+			imgUtilMoveImgToDBFromFormidable(files, config.serverData.imgBaseDir, imgUploadTempPath, data[0].img_path)
+			.then((result) => res.redirect(303, '/clients'))
+			.catch((err) => res.redirect(303, '/clients'))
 			
 		})
-		.catch((err)=>res.redirect('/clients'))
+		.catch((err) => res.redirect(303, '/clients'))
 	})
 })
+
+
+app.post('/clients', (req, res) => {
+
+	const form = new formidable.IncomingForm()
+	form.parse(req, async(err, fields, files) => {
+		if(err){
+			console.log('Error parsing incoming form: ', err)
+			return
+		}
+
+
+
+		const [imgUploadTempPath, imgTempName] = imgUtilGetTempPathAndNameFromFormidable(files)
+		let imgCurrentAbsDir, folderAlreadyExisted
+		await imgUtilGetDBDir(config.serverData.imgBaseDir, config.serverData.imgCurrentAbsDir, config.serverData.imgDirMaxFiles).then((res)=> [imgCurrentAbsDir, folderAlreadyExisted] = res)
+		if(folderAlreadyExisted){
+			config.serverData.imgCurrentAbsDir = imgCurrentAbsDir
+			// config.saveServerData(config.serverData).catch((err)=>console.log('Error while saving serverData: ', err))			
+		}
+
+
+
+		model.clients_add_one(fields.surname, fields.firstnames, fields.email.split('::'), fields.phone.split('::'), `/imgs/${imgCurrentAbsDir.replace(config.serverData.imgBaseDir, '')}`, imgTempName, fields.country, fields.address, fields.address)
+		.then((data)=>{ 
+			
+			console.log('Insterted Item: ', data)
+			imgUtilMoveImgToDBFromFormidable(files, config.serverData.imgBaseDir, imgUploadTempPath, data[0].img_path)
+			.then((result) => res.redirect(303, '/clients'))
+			.catch((err) => res.redirect(303, '/clients'))
+			
+		})
+		.catch((err) => res.redirect(303, '/clients'))
+	})
+})
+
+
 
 app.get('/*', (req, res) => {
 

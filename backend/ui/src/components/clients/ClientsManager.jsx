@@ -32,7 +32,7 @@ const ClientsManager = (props) => {
     <div className="container-fluid container-page d-flex flex-column flex-md-row justify-content-start justify-content-md-space-around align-items-stretch align-items-md-start">
       <React.Fragment>
         <ClientList list={reduxStore.getState().clients || {}} onSelectionChange={newSelectedClient => setClientFormData(newSelectedClient)}/>
-        <ClientForm clientData={clientFormData}/>
+        <ClientForm clientData={clientFormData} onSubmit={()=>{ setIsClientListRetrieved(false); window.location.reload();}}/>
       </React.Fragment>
     </div>
   );

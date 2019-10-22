@@ -47,3 +47,20 @@ module.exports.clients_add_one = (surname, firstnames, emails, phones, imgFolder
 	})
 } 
 
+module.exports.clients_update_one_by_id = (clientID, updatedFields, updatedValues) => {
+	return new Promise((resolve, reject) => {
+	    pool.query('select * from order_app.clients_update_one_by_id($1, $2, $3);', [parseInt(clientID), updatedFields, updatedValues], (err, result) => {
+	        if (err) {
+	        	console.log(`model.clients_update_one_by_id: Query failed`, err)
+	            reject(err)
+	        }
+	        try{
+		        console.log(`model.clients_update_one_by_id: Query returned ${result.rows.length} entries`)
+		        resolve(result.rows)
+	        }catch(exception){
+	        	reject(exception)
+	        }
+	    });
+	})
+} 
+

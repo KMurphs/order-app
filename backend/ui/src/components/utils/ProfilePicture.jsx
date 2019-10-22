@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import {useRenderDataFromPropsAndLocalChanges} from '../../utilsFunctions/RenderDataFromPropsAndLocalChanges'
 
@@ -8,7 +8,7 @@ const ProfilePicture = (props) => {
 
   return ( 
       <div className="input-group mb-3 d-flex flex-column">
-        <img src={getRenderImgPathFromCurrentProps(props.formData.img_path) || "/imgs/NoImage.png"} alt="No Picture Provided" className="img-thumbnail"></img>
+        <img src={getRenderImgPathFromCurrentProps(props.formData.img_path) || "/imgs/NoImage.png"} alt={`Showing selected ${props.formType}`} className="img-thumbnail"></img>
         <div className="custom-file">
           <input type="file" 
                  className="custom-file-input" 
