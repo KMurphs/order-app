@@ -6,7 +6,7 @@ const SupplierManager = (props) => {
   return ( 
     <div className="container-fluid container-page">
       <React.Fragment>
-        {/* <ProductForm/> */}
+        <ProductForm/>
       </React.Fragment>
     </div>
   );

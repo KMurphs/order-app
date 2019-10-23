@@ -27,7 +27,7 @@ const EmailPhoneWebsite = (props) => {
                id={props.formType + "-form__phone"} 
                aria-describedby="phoneHelp" 
                placeholder="Enter Phone Number" 
-               pattern={formRequired.phone?"[0-9]{4,5}-[0-9]{9}":"[0]+"}  
+               pattern={formRequired.phone?"[0-9]{4,5}-[0-9]{9}":".*"}  
                onChange={(evt)=>props.onValueChange('phone', evt.target.value)} 
                value={props.formData.phone || '0'}
                required={formRequired.phone}/>
