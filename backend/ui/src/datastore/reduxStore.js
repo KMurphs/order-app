@@ -12,7 +12,7 @@ const reducer = (state = {}, action) => {
             state.clients = {...action.payload.clients }
             return state;
         case 'LOAD_SUPPLIERS':
-            state.clients = {...action.payload.suppliers }
+            state.suppliers = {...action.payload.suppliers }
             return state;
         default:
             return state;

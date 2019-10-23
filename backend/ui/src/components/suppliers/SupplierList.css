@@ -1,0 +1,82 @@
+.supplier-list {
+    /* min-width: 500px; */
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.supplier-list .list-group-item {
+    padding: .5em .5em;
+    line-height: 1em;
+}
+
+.supplier-list .supplier-list-text-primary {
+    line-height: 2em;
+    color: #555;
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+.supplier-list .supplier-list-text-primary .supplier-list-text-secondary {
+    font-size: 1em;
+    margin-left: .5em;
+    font-weight: normal;
+}
+
+.supplier-list .supplier-list-text-secondary {
+    color: #777;
+    font-size: 0.7em;
+}
+
+.supplier-list .supplier-list-text-disabled {
+    color: #ccc;
+    font-size: 0.8em;
+}
+
+.supplier-list .supplier-list-add-box {
+    display: flex;
+    align-items: center;
+    color: #aaa;
+    padding: 1em 1em;
+    text-decoration: none;
+}
+
+.supplier-list .supplier-list-add-box span {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.supplier-list .supplier-list-add-box:hover {
+    color: #777;
+}
+
+.supplier-list .supplier-list-add-box .fa-plus {
+    font-size: 1.8em;
+    margin-left: .5em;
+    margin-right: 1.5em;
+}
+
+.supplier-list .supplier-list-item {
+    display: flex;
+    align-items: stretch;
+}
+
+.supplier-list .supplier-list-item .img-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1em;
+}
+
+.supplier-list .supplier-list-item img {
+    height: 5em;
+    width: 5em;
+    object-fit: cover;
+}
+
+.supplier-list .supplier-list-item-linkbox {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}

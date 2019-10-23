@@ -14,7 +14,7 @@ const FormGroupID = (props) => {
                id={props.formType + "-form__surname"} 
                aria-describedby="surnameHelp" 
                placeholder="Enter Surname" 
-               onChange={(evt)=>props.onValueChange('surname', evt.target.value)} 
+               onChange={(evt)=>props.onValueChange('surname', evt.target.value.toCapitals())} 
                value={props.formData.surname || ''} 
                required={formRequired.surname}/>
         <small id="surnameHelp" className="form-text text-muted">{props.formType}'s Surname</small>
@@ -27,7 +27,7 @@ const FormGroupID = (props) => {
                id={props.formType + "-form__firstnames"} 
                aria-describedby="firstnamesHelp" 
                placeholder="Enter First Names" 
-               onChange={(evt)=>props.onValueChange('firstnames', evt.target.value)} 
+               onChange={(evt)=>props.onValueChange('firstnames', evt.target.value.toCapitals())} 
                value={props.formData.firstnames || ''} 
                required={formRequired.firstnames}/>
         <small id="firstnamesHelp" className="form-text text-muted">{props.formType}'s First Names</small>
@@ -40,7 +40,7 @@ const FormGroupID = (props) => {
                id={props.formType + "-form__storename"} 
                aria-describedby="storenameHelp" 
                placeholder="Enter Store Name" 
-               onChange={(evt)=>props.onValueChange('storename', evt.target.value)} 
+               onChange={(evt)=>props.onValueChange('storename', evt.target.value.toCapitals())} 
                value={props.formData.storename || ''} 
                required={formRequired.storename}/>
         <small id="storenameHelp" className="form-text text-muted">{props.formType}'s Store Name</small>

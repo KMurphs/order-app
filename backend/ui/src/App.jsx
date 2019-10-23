@@ -63,7 +63,7 @@ export default App;
 const pingServer = ()=>{
 
   return new Promise((resolve) => {
-    (new window.XmlHttpRequest()).getData(`${process.env.REACT_APP_BASE_URL}/ping`, {})
+    (new window.XmlHttpRequest()).getData(`${process.env.REACT_APP_BASE_URL}/api/ping`, {})
     .then((res) => resolve(res.msg === 'pong'))
     .catch((err) => resolve(false))
   })
