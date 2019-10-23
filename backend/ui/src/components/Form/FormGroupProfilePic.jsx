@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useRenderDataFromPropsAndLocalChanges} from '../../utilsFunctions/RenderDataFromPropsAndLocalChanges'
+import {useRenderDataFromPropsAndLocalChanges} from './RenderDataFromPropsAndLocalChanges'
 
 const ProfilePicture = (props) => {
 

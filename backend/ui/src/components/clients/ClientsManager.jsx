@@ -11,20 +11,22 @@ const ClientsManager = (props) => {
   const [clientFormData, setClientFormData] = useState({})
 
 
+
+
   // Get Client List if not already present 
   if(!isClientListRetrieved){
     
     (new window.XmlHttpRequest()).getData(`${process.env.REACT_APP_BASE_URL}/api/clients`, {})
     .then((res) => {
       res.forEach(item => item.img_path = `${process.env.REACT_APP_BASE_URL}${item.img_path.replace(/\\\\/g,'/')}`)
-      console.log(res)
       reduxStore.dispatch(reduxLoadClients(res)); // store retrieved client data
       setIsClientListRetrieved(true); // Force a re-render with retrieved client data
-      // console.log(reduxStore.getState().clients)
     })
     .catch((err) => console.log(err))
 
   }
+
+
 
 
   // Return react component's html
@@ -34,8 +36,9 @@ const ClientsManager = (props) => {
         <ClientList list={reduxStore.getState().clients || {}} onSelectionChange={newSelectedClient => setClientFormData(newSelectedClient)}/>
         <ClientForm formData={clientFormData} 
                     formType='client' 
+                    appIsOnline={props.isOnline} 
                     formHidden={{'storename' : true, 'website': true}} 
-                    formRequired={{'storename' : true, 'phone' : true, 'country' : true}} 
+                    formRequired={{'surname' : true, 'phone' : true, 'country' : true}} 
                     formAction='clients' 
                     onSubmit={()=>{ setIsClientListRetrieved(false); window.location.reload();}}/>
       </React.Fragment>

@@ -11,20 +11,22 @@ const SupplierManager = (props) => {
   const [supplierFormData, setSupplierFormData] = useState({})
 
 
+  
+
   // Get Supplier List if not already present 
   if(!isSupplierListRetrieved){
     
     (new window.XmlHttpRequest()).getData(`${process.env.REACT_APP_BASE_URL}/api/suppliers`, {})
     .then((res) => {
       res.forEach(item => item.img_path = `${process.env.REACT_APP_BASE_URL}${item.img_path.replace(/\\\\/g,'/')}`)
-      console.log(res)
       reduxStore.dispatch(reduxLoadSuppliers(res)); // store retrieved Supplier data
       setIsSupplierListRetrieved(true); // Force a re-render with retrieved Supplier data
-      // console.log(reduxStore.getState().suppliers)
     })
     .catch((err) => console.log(err))
 
   }
+
+
 
 
   // Return react component's html
@@ -37,6 +39,7 @@ const SupplierManager = (props) => {
                     formHidden={{'surname' : true, 'firstnames' : true}} 
                     formRequired={{'storename' : true, 'website' : true, 'country' : true}} 
                     formAction='suppliers' 
+                    appIsOnline={props.isOnline} 
                     onSubmit={()=>{ setIsSupplierListRetrieved(false); window.location.reload();}}/>
       </React.Fragment>
     </div>
@@ -44,3 +47,5 @@ const SupplierManager = (props) => {
 }
  
 export default SupplierManager;
+
+

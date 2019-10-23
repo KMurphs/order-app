@@ -20,16 +20,29 @@ function App() {
   const [timerID, setTimerID] = useState(null)
   const [isOnline, setIsOnline] = useState(true)
 
-  if(timerID === null){ setTimerID(setInterval(()=>pingServer(setIsOnline), 5000)); }
+
+  if(timerID === null){ 
+    setTimerID(
+      setInterval(()=>{
+
+        pingServer()
+        .then((didServerReplyPong)=>{
+          reduxStore.dispatch(reduxLoadIsOnline(didServerReplyPong))
+          setIsOnline(didServerReplyPong)
+        })
+
+      }, 5000)
+    ); 
+  }
 
   return (
     <React.Fragment>
       <NavBar isOnline={isOnline}></NavBar>
       <Switch>
-        <Route exact path='/' component={SuppliersManager}></Route>
-        <Route exact path='/suppliers' component={SuppliersManager}></Route>
-        <Route exact path='/clients' component={ClientsManager}></Route>
-        <Route exact path='/products' component={ProductsManager}></Route>
+        <Route exact path='/' render={(props) => <SuppliersManager {...props} isOnline={isOnline} />} /*component={SuppliersManager}*/></Route>
+        <Route exact path='/suppliers' render={(props) => <SuppliersManager {...props} isOnline={isOnline} />} /*component={SuppliersManager}*/ ></Route>
+        <Route exact path='/clients'   render={(props) => <ClientsManager {...props} isOnline={isOnline} />} /*component={ClientsManager}*/></Route>
+        <Route exact path='/products'  render={(props) => <ProductsManager {...props} isOnline={isOnline} />} /*component={ProductsManager}*/></Route>
         <Route component={Default}></Route>
       </Switch>
     </React.Fragment>
@@ -47,22 +60,12 @@ export default App;
 
 
 
+const pingServer = ()=>{
 
-
-
-
-
-
-
-
-const pingServer = (cb)=>{
-  (new window.XmlHttpRequest()).getData('http://localhost:5000/ping', {})
-  .then((res) => {
-    reduxStore.dispatch(reduxLoadIsOnline(res.msg === 'pong'))
-    cb(res.msg === 'pong')
+  return new Promise((resolve) => {
+    (new window.XmlHttpRequest()).getData(`${process.env.REACT_APP_BASE_URL}/ping`, {})
+    .then((res) => resolve(res.msg === 'pong'))
+    .catch((err) => resolve(false))
   })
-  .catch((err) => {
-    reduxStore.dispatch(reduxLoadIsOnline(false))
-    cb(false)
-  })
+
 }
