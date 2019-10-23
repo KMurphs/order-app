@@ -11,6 +11,9 @@ const reducer = (state = {}, action) => {
         case 'LOAD_CLIENTS':
             state.clients = {...action.payload.clients }
             return state;
+        case 'LOAD_SUPPLIERS':
+            state.clients = {...action.payload.suppliers }
+            return state;
         default:
             return state;
     }

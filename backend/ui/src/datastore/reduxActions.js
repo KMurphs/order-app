@@ -8,6 +8,11 @@ const loadClients = (clients) => ({
     payload: { 'clients': clients },
 });
 
+const loadSuppliers = (suppliers) => ({
+    type: 'LOAD_SUPPLIERS',
+    payload: { 'suppliers': suppliers },
+});
 
 
-export { loadClients, loadIsOnline }
+
+export { loadIsOnline, loadClients, loadSuppliers }

@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const SurnameFirstnames = (props) => {
+const FormGroupID = (props) => {
   const formRequired = !props.formRequired ? {} : props.formRequired
   const formHidden = !props.formHidden ? {} : props.formHidden
   return ( 
@@ -32,10 +32,23 @@ const SurnameFirstnames = (props) => {
                required={formRequired.firstnames}/>
         <small id="firstnamesHelp" className="form-text text-muted">{props.formType}'s First Names</small>
       </div>
+      <div className="form-group" style={{'display': `${formHidden.storename?'none':'block'}`}}>
+        <label htmlFor={props.formType + "-form__storename"}>Store Name</label>
+        <input type="text" 
+               className="form-control" 
+               name="storename" 
+               id={props.formType + "-form__storename"} 
+               aria-describedby="storenameHelp" 
+               placeholder="Enter Store Name" 
+               onChange={(evt)=>props.onValueChange('storename', evt.target.value)} 
+               value={props.formData.storename || ''} 
+               required={formRequired.storename}/>
+        <small id="storenameHelp" className="form-text text-muted">{props.formType}'s Store Name</small>
+      </div>
       <hr/>
       <br/>
     </React.Fragment>
   );
 }
  
-export default SurnameFirstnames;
+export default FormGroupID;

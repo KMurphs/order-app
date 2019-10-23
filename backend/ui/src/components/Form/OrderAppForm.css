@@ -1,39 +1,39 @@
-.supplier-form {
+.order-app-form {
     min-width: 300px;
     width: 90%;
     max-width: 500px;
     margin: auto;
 }
 
-.supplier-form .input-group {
+.order-app-form .input-group {
     max-width: 200px;
 }
 
-.supplier-form .input-group .custom-file {
+.order-app-form .input-group .custom-file {
     width: 100%;
     cursor: pointer;
 }
 
-.supplier-form .display-4 {
+.order-app-form .display-4 {
     margin-top: 1em;
     text-align: center;
     font-size: 1.8em;
 }
 
-.supplier-form .form-group {
+.order-app-form .form-group {
     margin-top: 1.5em;
 }
 
-.supplier-form .form-group label {
+.order-app-form .form-group label {
     margin-bottom: 0;
 }
 
-.supplier-form .form-group small {
+.order-app-form .form-group small {
     margin: 3px 0 0 5px;
     font-size: .7em;
     text-transform: capitalize;
 }
 
-.supplier-form button {
+.order-app-form button {
     margin-bottom: 20px;
 }

@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 
 import {reduxStore, reduxLoadClients} from '../../datastore';
-import ClientList from '../clients/ClientList';
-import ClientForm from '../clients/ClientForm';
+import ClientList from './ClientList';
+import ClientForm from '../Form/OrderAppForm';
 
 const ClientsManager = (props) => {
 
@@ -32,7 +32,12 @@ const ClientsManager = (props) => {
     <div className="container-fluid container-page d-flex flex-column flex-md-row justify-content-start justify-content-md-space-around align-items-stretch align-items-md-start">
       <React.Fragment>
         <ClientList list={reduxStore.getState().clients || {}} onSelectionChange={newSelectedClient => setClientFormData(newSelectedClient)}/>
-        <ClientForm clientData={clientFormData} onSubmit={()=>{ setIsClientListRetrieved(false); window.location.reload();}}/>
+        <ClientForm formData={clientFormData} 
+                    formType='client' 
+                    formHidden={{'storename' : true, 'website': true}} 
+                    formRequired={{'storename' : true, 'phone' : true, 'country' : true}} 
+                    formAction='clients' 
+                    onSubmit={()=>{ setIsClientListRetrieved(false); window.location.reload();}}/>
       </React.Fragment>
     </div>
   );

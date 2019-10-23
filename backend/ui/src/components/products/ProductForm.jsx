@@ -1,7 +1,7 @@
 import React from 'react';
 import './ProductForm.css';
 
-import FormGroupProfilePic from '../utils/FormGroupProfilePic';
+import FormGroupProfilePic from '../Form/FormGroupProfilePic';
 import ProductTags from './ProductTags';
 import ProductDetails from './ProductDetails';
 import ProductSuppliers from './ProductSuppliers';
