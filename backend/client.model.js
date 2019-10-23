@@ -1,16 +1,5 @@
-const { Pool } = require('pg');
-
 const config = require('./config');
-// console.log(config)
-
-
-const pool = new Pool({
-  user: config.dbUser,
-  host: config.dbHost,
-  database: config.dbName,
-  password: config.dbPassword,
-  port: config.dbPort,
-})
+const pool = config.getPool()
 
 
 module.exports.clients_get_all = () => {

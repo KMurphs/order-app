@@ -8,6 +8,9 @@ import FormGroupAddress from './FormGroupAddress';
 import FormGroupContact from './FormGroupContact';
 import FormGroupProfilePic from './FormGroupProfilePic';
 
+String.prototype.toCapitals = function(){
+  return this.split(' ').map(word => word.charAt(0).toUpperCase()+word.substring(1).toLowerCase()).join(' ')
+}
 
 const OrderAppForm = (props) => {
   const {formType, formAction, appIsOnline} = props
@@ -52,10 +55,10 @@ const OrderAppForm = (props) => {
                            formHidden={formHidden}
                            onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
       <FormGroupAddress    formType={formType} 
-                           formData={{address: renderData.shipping_address, country: renderData.country}}
+                           formData={{address: renderData.address, country: renderData.country}}
                            formRequired={formRequired}
                            formHidden={formHidden}
-                           onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey==='address'?'shipping_address':owningKey, newValue)}/>
+                           onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
       <button type="submit" className="btn btn-primary btn-block" disabled={!appIsOnline}>Submit</button>
     </form>
   );

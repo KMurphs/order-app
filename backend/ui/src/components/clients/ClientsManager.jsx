@@ -18,7 +18,10 @@ const ClientsManager = (props) => {
     
     (new window.XmlHttpRequest()).getData(`${process.env.REACT_APP_BASE_URL}/api/clients`, {})
     .then((res) => {
-      res.forEach(item => item.img_path = `${process.env.REACT_APP_BASE_URL}${item.img_path.replace(/\\\\/g,'/')}`)
+      res.forEach(item => {
+        item.img_path = `${process.env.REACT_APP_BASE_URL}${item.img_path.replace(/\\\\/g,'/')}`
+        item.address = item.shipping_address
+      })
       reduxStore.dispatch(reduxLoadClients(res)); // store retrieved client data
       setIsClientListRetrieved(true); // Force a re-render with retrieved client data
     })

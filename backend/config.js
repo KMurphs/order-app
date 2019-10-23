@@ -1,27 +1,37 @@
 const fs = require('fs')
+const { Pool } = require('pg');
 
-const serverDataDefaults = {
-	"imgCurrentAbsDir":"C:\\PersonalProjects\\order-app-react-pwa\\dbImgs\\20190921",
-	"imgBaseDir":"C:\\PersonalProjects\\order-app-react-pwa\\dbImgs\\",
-	"imgDirMaxFiles":"5000"
-}
+
+
+let pool = null
+let serverData = null
+
+
+
 
 const getServerData = () => {
 
-	return new Promise((resolve) => {
+	const serverDataDefaults = {
+		"imgCurrentAbsDir":"C:\\PersonalProjects\\order-app-react-pwa\\dbImgs\\20190921",
+		"imgBaseDir":"C:\\PersonalProjects\\order-app-react-pwa\\dbImgs\\",
+		"imgDirMaxFiles":"5000"
+	}
 
-		fs.readFile('serverData.json', (err, data) => {
-			if (err) {
-				resolve(serverDataDefaults)
-			};
-			try{
-				resolve(JSON.parse(data))
-			}catch(exception){
-				resolve(serverDataDefaults)
-			}
 
-		});			
-	})
+	if(serverData === null){
+			
+		console.log('config: Reading Server Data File')
+		serverData = serverDataDefaults
+
+		try{
+			serverData = JSON.parse(fs.readFileSync('serverData.json', "utf8"))
+		}catch(exception){
+			console.log('config: Error Reading/Parsing Server Data file', exception)
+		}
+
+	}
+	
+	return serverData
 }
 
 const saveServerData = (serverData) => {
@@ -38,15 +48,40 @@ const saveServerData = (serverData) => {
 
 
 
-module.exports = {
-  dbUser: process.env.PGUSER || 'order_app_user',
-  dbHost: process.env.PGUHOST || 'localhost',
-  dbName: process.env.PGDATABASE || 'order_app',
-  dbPassword: process.env.PGPASS || 'Tester321!',
-  dbPort: process.env.PGPORT || 5432,
-  appPort: process.env.PORT || 5000,
-  getServerData: getServerData,
-  saveServerData: saveServerData,
+
+
+
+const getDBPool = ()=>{
+
+
+	if(pool === null){
+		console.log('config: Initializing DB Pool')
+		pool = new Pool({
+			user: configData.dbUser,
+			host: configData.dbHost,
+			database: configData.dbName,
+			password: configData.dbPassword,
+			port: configData.dbPort,
+		})
+	}
+
+	return pool 
 }
+
+
+
+let configData = {
+	dbUser: process.env.PGUSER || 'order_app_user',
+	dbHost: process.env.PGUHOST || 'localhost',
+	dbName: process.env.PGDATABASE || 'order_app',
+	dbPassword: process.env.PGPASS || 'Tester321!',
+	dbPort: process.env.PGPORT || 5432,
+	appPort: process.env.PORT || 5000,
+	getPool: getDBPool,
+	getServerData: getServerData,
+	saveServerData: saveServerData,
+}
+
+module.exports = configData
 
 
