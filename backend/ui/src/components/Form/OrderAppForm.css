@@ -1,0 +1,39 @@
+.order-app-form {
+    min-width: 300px;
+    width: 90%;
+    max-width: 500px;
+    margin: auto;
+}
+
+.order-app-form .input-group {
+    max-width: 200px;
+}
+
+.order-app-form .input-group .custom-file {
+    width: 100%;
+    cursor: pointer;
+}
+
+.order-app-form .display-4 {
+    margin-top: 1em;
+    text-align: center;
+    font-size: 1.8em;
+}
+
+.order-app-form .form-group {
+    margin-top: 1.5em;
+}
+
+.order-app-form .form-group label {
+    margin-bottom: 0;
+}
+
+.order-app-form .form-group small {
+    margin: 3px 0 0 5px;
+    font-size: .7em;
+    text-transform: capitalize;
+}
+
+.order-app-form button {
+    margin-bottom: 20px;
+}
