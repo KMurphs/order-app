@@ -3,10 +3,10 @@ import React from 'react';
 
 const SurnameFirstnames = (props) => {
   const formRequired = !props.formRequired ? {} : props.formRequired
-  const formDisabled = !props.formDisabled ? {} : props.formDisabled
+  const formHidden = !props.formHidden ? {} : props.formHidden
   return ( 
     <React.Fragment>
-      <div className="form-group">
+      <div className="form-group" style={{'display': `${formHidden.surname?'none':'block'}`}}>
         <label htmlFor={props.formType + "-form__surname"}>Surname</label>
         <input type="text" 
                className="form-control" 
@@ -16,11 +16,10 @@ const SurnameFirstnames = (props) => {
                placeholder="Enter Surname" 
                onChange={(evt)=>props.onValueChange('surname', evt.target.value)} 
                value={props.formData.surname || ''} 
-               required={formRequired.surname} 
-               disabled={formDisabled.surname}/>
+               required={formRequired.surname}/>
         <small id="surnameHelp" className="form-text text-muted">{props.formType}'s Surname</small>
       </div>
-      <div className="form-group">
+      <div className="form-group" style={{'display': `${formHidden.firstnames?'none':'block'}`}}>
         <label htmlFor={props.formType + "-form__firstnames"}>First Names</label>
         <input type="text" 
                className="form-control" 
@@ -30,8 +29,7 @@ const SurnameFirstnames = (props) => {
                placeholder="Enter First Names" 
                onChange={(evt)=>props.onValueChange('firstnames', evt.target.value)} 
                value={props.formData.firstnames || ''} 
-               required={formRequired.firstnames} 
-               disabled={formDisabled.firstnames}/>
+               required={formRequired.firstnames}/>
         <small id="firstnamesHelp" className="form-text text-muted">{props.formType}'s First Names</small>
       </div>
       <hr/>

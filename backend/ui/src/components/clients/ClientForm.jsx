@@ -3,10 +3,10 @@ import './ClientForm.css';
 
 import {useRenderDataFromPropsAndLocalChanges} from '../../utilsFunctions/RenderDataFromPropsAndLocalChanges'
 
-import ProfilePicture from '../utils/ProfilePicture';
-import AddressCountry from '../utils/AddressCountry';
-import EmailPhoneWebsite from '../utils/EmailPhoneWebsite';
-import SurnameFirstnames from '../utils/SurnameFirstnames';
+import FormGroupID from '../utils/FormGroupID';
+import FormGroupAddress from '../utils/FormGroupAddress';
+import FormGroupContact from '../utils/FormGroupContact';
+import FormGroupProfilePic from '../utils/FormGroupProfilePic';
 
 
 const ClientForm = (props) => {
@@ -25,24 +25,24 @@ const ClientForm = (props) => {
       <br/>
       {/* <input type="text" name="id" defaultValue={renderData.id} disabled style={{'display':'none'}}/> */}
       <input type="text" name="id" value={`${renderData.id}`} onChange={(evt)=>setRenderDataFromLocalKeyValue(renderData, 'id', evt.target.value)} style={{'display':'none'}}/>
-      <ProfilePicture    formType={formType} 
-                         formData={{img_path: renderData.img_path}}
-                         onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
-      <SurnameFirstnames formType={formType} 
-                         formData={{surname: renderData.surname, firstnames: renderData.firstnames}}
-                         formRequired={{surname: true, firstnames: false}}
-                         formDisabled={{surname: false, firstnames: false}}
-                         onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
-      <EmailPhoneWebsite formType={formType} 
-                         formData={{email: renderData.email, phone: renderData.phone, website: renderData.website}}
-                         formRequired={{email: false, phone: true, website: false}}
-                         formDisabled={{email: false, phone: false, website: true}}
-                         onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
-      <AddressCountry    formType={formType} 
-                         formData={{address: renderData.shipping_address, country: renderData.country}}
-                         formRequired={{address: true, country: true}}
-                         formDisabled={{address: false, country: false}}
-                         onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey==='address'?'shipping_address':owningKey, newValue)}/>
+      <FormGroupProfilePic formType={formType} 
+                           formData={{img_path: renderData.img_path}}
+                           onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
+      <FormGroupID         formType={formType} 
+                           formData={{surname: renderData.surname, firstnames: renderData.firstnames}}
+                           formRequired={{surname: true, firstnames: false}}
+                           formHidden={{surname: false, firstnames: false}}
+                           onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
+      <FormGroupContact    formType={formType} 
+                           formData={{email: renderData.email, phone: renderData.phone, website: renderData.website}}
+                           formRequired={{email: false, phone: true, website: false}}
+                           formHidden={{email: false, phone: false, website: true}}
+                           onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
+      <FormGroupAddress    formType={formType} 
+                           formData={{address: renderData.shipping_address, country: renderData.country}}
+                           formRequired={{address: true, country: true}}
+                           formHidden={{address: false, country: false}}
+                           onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey==='address'?'shipping_address':owningKey, newValue)}/>
       <button type="submit" className="btn btn-primary btn-block">Submit</button>
     </form>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import './ProductForm.css';
 
-import ProfilePicture from '../utils/ProfilePicture';
+import FormGroupProfilePic from '../utils/FormGroupProfilePic';
 import ProductTags from './ProductTags';
 import ProductDetails from './ProductDetails';
 import ProductSuppliers from './ProductSuppliers';
@@ -19,7 +19,7 @@ const ProductForm = (props) => {
         <div className="container">
           <div className="d-flex justify-content-between">
             <div>
-              <ProfilePicture/>
+              <FormGroupProfilePic/>
             </div>
             <div style={{'maxWidth': '120px'}}>
               <ProductSizeQtyVariant formType={formType}/>
