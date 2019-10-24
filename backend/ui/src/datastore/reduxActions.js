@@ -13,6 +13,11 @@ const loadSuppliers = (suppliers) => ({
     payload: { 'suppliers': suppliers },
 });
 
+const loadProducts = (products) => ({
+    type: 'LOAD_PRODUCTS',
+    payload: { 'products': products },
+});
 
 
-export { loadIsOnline, loadClients, loadSuppliers }
+
+export { loadIsOnline, loadClients, loadSuppliers, loadProducts }

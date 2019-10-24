@@ -31,17 +31,24 @@
     top: 0;
 }
 
-.picture-preview-swiper-container>.picture-preview-add button {
+.picture-preview-swiper-container>.picture-preview-add label {
     width: 100%;
     height: 100%;
     border-radius: 0;
     padding: 0;
     margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.picture-preview-swiper-container>.picture-preview-add button>.fa-plus {
+.picture-preview-swiper-container>.picture-preview-add label>.fa-plus {
     font-size: 2em;
     color: #ccc;
+}
+
+.picture-preview-slider-element-slide {
+    width: auto;
 }
 
 .picture-preview-slider-element-slide img {

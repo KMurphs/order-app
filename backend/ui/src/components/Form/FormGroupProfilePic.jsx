@@ -4,12 +4,24 @@ import {useRenderDataFromPropsAndLocalChanges} from './RenderDataFromPropsAndLoc
 
 const ProfilePicture = (props) => {
 
-  const [getRenderImgPathFromCurrentProps, setRenderImgPathFromLocalChanges] = useRenderDataFromPropsAndLocalChanges(props.formData.img_path)
+  const defaultPicture = '/imgs/NoImage.png'
+  const formHidden = !props.formHidden ? {} : props.formHidden
+  const [getRenderImgPathFromCurrentProps, setRenderImgPathFromLocalChanges] = useRenderDataFromPropsAndLocalChanges(props.formData.img_path || defaultPicture)
+
 
   return ( 
       <div className="input-group mb-3 d-flex flex-column">
-        <img src={getRenderImgPathFromCurrentProps(props.formData.img_path) || "/imgs/NoImage.png"} alt={`Showing selected ${props.formType}`} className="img-thumbnail"></img>
-        <div className="custom-file">
+        
+        <img  alt={`Showing selected ${props.formType}`} 
+              className="img-thumbnail"
+              src={
+                    /^data:image/.test(getRenderImgPathFromCurrentProps(props.formData.img_path)) || 
+                    /imgs\//.test(getRenderImgPathFromCurrentProps(props.formData.img_path)) 
+                    ? getRenderImgPathFromCurrentProps(props.formData.img_path) 
+                    : defaultPicture
+                  }/>
+                  
+        <div className="custom-file" style={{'display': `${formHidden.input?'none':'block'}`}}>
           <input type="file" 
                  className="custom-file-input" 
                  id="supplier-form__upload" 
@@ -27,6 +39,7 @@ const ProfilePicture = (props) => {
                  }}/>
           <label className="custom-file-label" htmlFor="supplier-form__upload">Upload Picture</label>
         </div>
+
         <br/>
       </div>
   );

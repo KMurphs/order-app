@@ -169,3 +169,15 @@
     transition: all .6s;
     margin-left: 1.2em;
 }
+
+.product-form .new-tag {
+    opacity: 1;
+    width: auto;
+    transition: all .3s;
+}
+
+.product-form .new-tag--vanished {
+    opacity: 0;
+    width: 0;
+    transition: all .3s;
+}

@@ -14,6 +14,9 @@ const reducer = (state = {}, action) => {
         case 'LOAD_SUPPLIERS':
             state.suppliers = {...action.payload.suppliers }
             return state;
+        case 'LOAD_PRODUCTS':
+            state.products = {...action.payload.products }
+            return state;
         default:
             return state;
     }

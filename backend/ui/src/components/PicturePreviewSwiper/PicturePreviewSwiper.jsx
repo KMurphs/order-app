@@ -2,15 +2,21 @@ import React from 'react';
 import Swiper from 'react-id-swiper';
 import './PicturePreviewSwiper.css';
 
-
+import {useRenderDataFromPropsAndLocalChanges} from '../Form/RenderDataFromPropsAndLocalChanges'
 
 const PicturePreviewSwiper = (props) => {
+
+  const addInputID = `${new Date().getTime()}`
+
+  const formHidden = !props.formHidden ? {} : props.formHidden
+  const defaultPicture = '/imgs/NoImage.png'
+  let initialPictures = props.pictures
+  if(!props.pictures || props.pictures === null){
+    initialPictures = [defaultPicture]
+  }
+  const [getRenderImgPathFromCurrentProps, setRenderImgPathFromLocalChanges] = useRenderDataFromPropsAndLocalChanges(initialPictures)
+
   const params = {
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'bullets',
-      clickable: true
-    },
     slidesPerView: 5,
     spaceBetween: 0,
     freeMode: true,
@@ -19,17 +25,47 @@ const PicturePreviewSwiper = (props) => {
       prevEl: '.swiper-button-prev'
     },
   }
- 
+
   return(
-    <div className="picture-preview-swiper-container picture-preview-swiper-container--small">
-      <div className="picture-preview-swiper">
-        <Swiper {...params}>
-          {props.pictures.map((item, index) => <div key={index} className='picture-preview-slider-element-slide'><img src={item.src} alt={item.alt} className="img-thumbnail picture-preview-slider__picture"/></div>)}
+    <div className="picture-preview-swiper-container picture-preview-swiper-container--small" id={`${new Date().getTime()}`}>
+
+      
+      <div className="picture-preview-swiper" style={{'width': `${formHidden.addBtn?'100%':'calc(100% - 4em)'}`}}>
+        <Swiper {...params} key={props.key}>
+          {
+            getRenderImgPathFromCurrentProps(initialPictures).map((item, index) => 
+              <div key={index} className='picture-preview-slider-element-slide' onClick={()=>props.onNewSelection(item)}>
+                <img src={/^data:image/.test(item) || /^data:image/.test('imgs/') ? item : defaultPicture} alt={`swiper picture ${index}`} className="img-thumbnail picture-preview-slider__picture"/>
+              </div>
+            )
+          }
         </Swiper>
       </div>
-      <div className="picture-preview-add">
-        <button type="button" className="btn btn-outline-light"><i className="fas fa-plus"></i></button>
+
+
+      <div className="picture-preview-add" style={{'display': `${formHidden.addBtn?'none':'inline-block'}`}}>
+        <label htmlFor={`picture-preview-swiper__upload${addInputID}`} className="btn btn-outline-light"><i className="fas fa-plus"></i></label>
+        <input type="file" 
+                 style={{'display':'none'}}
+                 className="custom-file-input" 
+                 id={`picture-preview-swiper__upload${addInputID}`}
+                 name="img_path" 
+                 aria-describedby="supplier-form__upload" 
+                 onChange={(inputFile)=> {
+                     if(inputFile.target.files && inputFile.target.files[0]){
+                      var reader = new FileReader();
+                      reader.onload = (e) => {
+                        if(/^data:image/.test(e.target.result)){
+                          setRenderImgPathFromLocalChanges([e.target.result, ...getRenderImgPathFromCurrentProps(initialPictures).filter(img => img !== defaultPicture)])
+                          props.onNewPicture([e.target.result,...getRenderImgPathFromCurrentProps(initialPictures)], e.target.result)
+                        }
+                      }
+                      reader.readAsDataURL(inputFile.target.files[0]);  
+                     } 
+                 }}/>
       </div>
+
+
     </div>
   )
 }

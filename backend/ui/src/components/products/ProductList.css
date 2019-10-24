@@ -1,0 +1,118 @@
+.product-list {
+    /* min-width: 500px; */
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.product-list .list-group-item {
+    padding: .5em .5em;
+    line-height: 1em;
+}
+
+.product-list .product-list-text-primary {
+    line-height: 2em;
+    color: #555;
+    font-weight: bold;
+    font-size: 1.3em;
+    padding-right: .7em;
+}
+
+.product-list .product-list-text-primary .product-list-text-disabled {
+    color: #ccc;
+    font-size: 0.7em;
+    margin-right: .7em;
+}
+
+.product-list .product-list-text-secondary {
+    color: #777;
+    font-size: 0.7em;
+}
+
+.product-list .product-list-text-disabled {
+    color: #ccc;
+    font-size: 0.8em;
+}
+
+.product-list .product-list-add-box {
+    display: flex;
+    align-items: center;
+    color: #aaa;
+    padding: 1em 1em;
+    text-decoration: none;
+}
+
+.product-list .product-list-add-box span {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.product-list .product-list-add-box:hover {
+    color: #777;
+}
+
+.product-list .product-list-add-box .fa-plus {
+    font-size: 1.8em;
+    margin-left: .5em;
+    margin-right: 1.5em;
+}
+
+.product-list .product-list-item {
+    display: flex;
+    align-items: stretch;
+}
+
+.product-list .product-list-item .img-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1em;
+    grid-column: 1/2;
+    grid-row: 1/2;
+    width: 100%;
+    height: 100%;
+}
+
+.product-list .product-list-item .text-container {
+    grid-column: 2/3;
+    grid-row: 1/2;
+    width: 100%;
+    height: 100%;
+    /* margin-left: .5em; */
+}
+
+.product-list .product-list-item .swiper-container {
+    grid-column: 1/3;
+    grid-row: 2/3;
+    width: 100%;
+    height: 100%;
+}
+
+.product-list .product-list-item img {
+    height: 5em;
+    width: 5em;
+    object-fit: cover;
+}
+
+.product-list .product-list-item-linkbox {
+    display: grid;
+    grid-template-columns: 5em 1fr;
+    grid-template-rows: 1fr 80px;
+    gap: .5em;
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+}
+
+.product-list .product-list-item .swiper-container .picture-preview-swiper-container--small {
+    height: 6em;
+}
+
+.product-list .product-list-text-primary--red {
+    color: red;
+}
+
+.product-list .product-list-text-primary--green {
+    color: green;
+}

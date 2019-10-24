@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 
 module.exports.getApp = function(){
 
+	// Get express app instance
 	const app = express()
 
 
@@ -26,14 +27,19 @@ module.exports.getApp = function(){
 	}));
 
 
+	//Setup logs for every incoming request
 	app.use((req, res, next) => {
 		if(req.url !== '/api/ping'){
-			console.log(`Server received '${req.method}' request at url '${req.url}' with parameters '${JSON.stringify(req.params)}' and body '${JSON.stringify(req.body).substr(0, 200)}'`)
+			console.log(`[${(Date().substr(4)).match(/.*\(/)[0].replace(' (','')}]: '${req.method}' request at url '${req.url}' with body '${JSON.stringify(req.body).substr(0, 200)}'`)
 		}
 		next()
 	})
+
+	// Expose static content directories
 	app.use(express.static(__dirname + '/ui/build')) //Temporary
 	app.use(express.static(__dirname + '/public'))
 
+
+	// Return express app 
 	return app
 }

@@ -5,6 +5,7 @@ const expressApp = require('./express.app')
 const app = expressApp.getApp()
 const clientRouter = require('./client.router')
 const supplierRouter = require('./supplier.router')
+const productRouter = require('./product.router')
 
 
 let config = require('./config')
@@ -34,6 +35,7 @@ app.get("/imgs/*", (req, res) => {
 
 clientRouter.exposeRoutes(app);
 supplierRouter.exposeRoutes(app);
+productRouter.exposeRoutes(app);
 
 
 

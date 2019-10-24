@@ -17,14 +17,9 @@ const OrderAppForm = (props) => {
   const formHidden = !props.formHidden ? {} : props.formHidden
   const formRequired = !props.formRequired ? {} : props.formRequired
 
-  console.log(formType)
-  console.log(formAction)
-  console.log(appIsOnline)
-  console.log(props)
 
   const [getRenderDataFromCurrentProps, , setRenderDataFromLocalKeyValue] = useRenderDataFromPropsAndLocalChanges(props.formData)
-  let renderData = getRenderDataFromCurrentProps(props.formData)
-
+  let renderData = getRenderDataFromCurrentProps(props.formData || {})
 
 
 
@@ -68,30 +63,31 @@ const OrderAppForm = (props) => {
 
 
 
-  function handleSubmit(evt, data, type){
-    evt.preventDefault();
-    
-    return new Promise((resolve, reject) => {
-      if(data.id){
-  
-        console.info(`Updating ${type} data with id ${data.id}`);
-        (new window.XmlHttpRequest()).putFormData(`${evt.target.getAttribute('action')}/${data.id}`, evt.target)
-        .then((res)=>resolve(res))
-        .catch((err)=>reject(err))
 
-      }else{
-  
-        console.info(`Uploading new ${type} data`);
-        (new window.XmlHttpRequest()).postFormData(evt.target.getAttribute('action'), evt.target)
-        .then((res)=>resolve(res))
-        .catch((err)=>reject(err))
-
-      }
-    })
-  }
 }
  
 export default OrderAppForm;
 
 
 
+export function handleSubmit(evt, data, type){
+  evt.preventDefault();
+  
+  return new Promise((resolve, reject) => {
+    if(data.id){
+
+      console.info(`Updating ${type} data with id ${data.id}`);
+      (new window.XmlHttpRequest()).putFormData(`${evt.target.getAttribute('action')}/${data.id}`, evt.target)
+      .then((res)=>resolve(res))
+      .catch((err)=>reject(err))
+
+    }else{
+
+      console.info(`Uploading new ${type} data`);
+      (new window.XmlHttpRequest()).postFormData(evt.target.getAttribute('action'), evt.target)
+      .then((res)=>resolve(res))
+      .catch((err)=>reject(err))
+
+    }
+  })
+}
