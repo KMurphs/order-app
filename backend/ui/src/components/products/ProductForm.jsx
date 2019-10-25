@@ -14,6 +14,12 @@ import PicturePreviewSwiper from '../PicturePreviewSwiper/PicturePreviewSwiper';
 
 
 
+import EditableFieldTest from '../EditableFields/EditableFieldTest';
+import EditableFieldText from '../EditableFields/EditableFieldText';
+
+
+
+
 const ProductForm = (props) => {
   const formType = 'product'
   const formAction = 'products'
@@ -36,6 +42,8 @@ const ProductForm = (props) => {
 
       <h3 className="display-4">{formType.charAt(0).toUpperCase() + formType.slice(1)} Details</h3>
       <br/>
+      
+      <EditableFieldTest/>
       <div className="container-fluid">
 
 
@@ -65,16 +73,46 @@ const ProductForm = (props) => {
         <div className="container">
           <br/>
           <br/>
-          <ProductSuppliers formType={formType}
+          {/* <ProductSuppliers formType={formType}
                             formData={{suppliers: renderData.suppliers}}
-                            onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
+                            onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/> */}
         </div>
 
 
         <div className="container">
-          <ProductDetails formType={formType}
-                          formData={{name: renderData.name, alias: renderData.alias, category: renderData.category, subcategory: renderData.subcategory}}
-                          onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
+          <div className='container-fluid'>
+            <EditableFieldText  fieldOwner='product'
+                                fieldName='product-name'
+                                initialValue={renderData.name}
+                                fieldRequired={true}
+                                placeholder='Enter Product Name'
+                                label='Product Name'
+                                handleChange={(newValue)=>setRenderDataFromLocalKeyValue(renderData, 'name', newValue)}/>
+            <EditableFieldText  fieldOwner='product'
+                                fieldName='product-alias'
+                                initialValue={renderData.alias}
+                                fieldRequired={true}
+                                placeholder='Enter Product Alias'
+                                label='Product Alias'
+                                handleChange={(newValue)=>setRenderDataFromLocalKeyValue(renderData, 'alias', newValue)}/>
+            <EditableFieldText  fieldOwner='product'
+                                fieldName='product-category'
+                                initialValue={renderData.category}
+                                fieldRequired={true}
+                                placeholder='Enter Product Category'
+                                label='Product Category'
+                                handleChange={(newValue)=>setRenderDataFromLocalKeyValue(renderData, 'category', newValue)}/>
+            <EditableFieldText  fieldOwner='product'
+                                fieldName='product-subcategory'
+                                initialValue={renderData.subcategory}
+                                fieldRequired={false}
+                                placeholder='Enter Product Subcategory'
+                                label='Product Subcategory'
+                                handleChange={(newValue)=>setRenderDataFromLocalKeyValue(renderData, 'subcategory', newValue)}/>
+            {/* <ProductDetails formType={formType}
+                            formData={{name: renderData.name, alias: renderData.alias, category: renderData.category, subcategory: renderData.subcategory}}
+                            onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/> */}
+          </div>
         </div>
 
 

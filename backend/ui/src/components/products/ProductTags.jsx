@@ -24,7 +24,7 @@ const ProductTags = (props) => {
   return ( 
     <React.Fragment>
       <div className='container-fluid'>
-        <span style={{marginBottom: '0.8em'}}>Product Tags</span>
+        <span style={{marginBottom: '0.8em', fontSize: '.8em'}}>Product Tags</span>
         <div className="product-tag-container">
 
 

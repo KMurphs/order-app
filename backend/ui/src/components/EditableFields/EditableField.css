@@ -1,0 +1,47 @@
+.input-group--no-borders {
+    position: relative;
+    --input-gorm-gray: #fafafa;
+    --input-gorm-gray-hover: #dadada;
+}
+
+.input-group--no-borders::after {
+    content: '';
+    position: absolute;
+    height: 1px;
+    width: 100%;
+    /* background: var(--blue); */
+    background: #bbb;
+    bottom: 0;
+    left: 0;
+    transform: scaleX(0);
+    transition: all .3s;
+}
+
+.input-group--no-borders:hover::after {
+    transform: scaleX(1);
+    transition: all .3s;
+}
+
+.input-group--no-borders .form-control {
+    border-radius: 0!important;
+    border: 0;
+    border-bottom: 1px solid var(--input-gorm-gray);
+}
+
+.input-group--no-borders .form-control:focus {
+    box-shadow: none;
+    /* border-bottom: 1px solid var(--blue); */
+}
+
+.input-group--no-borders .input-group-prepend .input-group-text,
+.input-group--no-borders .input-group-append .input-group-text {
+    background: var(--input-gorm-gray);
+    border: none;
+    transition: all .3s;
+}
+
+.input-group--no-borders:hover .input-group-prepend .input-group-text,
+.input-group--no-borders:hover .input-group-append .input-group-text {
+    background: var(--input-gorm-gray-hover);
+    transition: all .3s;
+}
