@@ -70,12 +70,12 @@ const ProductForm = (props) => {
                                 onNewPicture={(pictures, lastPicture) => {setDisplayedPicture(lastPicture); console.log('---------------------');setRenderDataFromLocalKeyValue(renderData, 'product_images', pictures)}}/>
         </div>
 
-        <div className="container">
+        <div className="container product-supplier-container">
           <br/>
           <br/>
-          {/* <ProductSuppliers formType={formType}
+          <ProductSuppliers formType={formType}
                             formData={{suppliers: renderData.suppliers}}
-                            onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/> */}
+                            onValueChange={(owningKey, newValue) => setRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
         </div>
 
 

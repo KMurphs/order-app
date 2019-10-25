@@ -9,6 +9,7 @@ const EditableFieldGeneral = (props) => {
   // Local Content generated within this component
   // It will persist as long as no new data is force down by the control component
   const [content, setContent] = useState('') 
+  const [isBeingEdited, setIsBeingEdited] = useState(false) 
 
 
 
@@ -41,7 +42,7 @@ const EditableFieldGeneral = (props) => {
 
     <div className="form-group">
       <small id={`${fieldName}Help`} className="form-text text-muted">{fieldTexts.help}</small>
-      <div className="input-group-sm d-flex input-group--no-borders">
+      <div className={`input-group-sm d-flex input-group-no-borders ${isBeingEdited?'input-group-no-borders--editable':''}`}>
 
 
 
@@ -49,9 +50,11 @@ const EditableFieldGeneral = (props) => {
           <span className="input-group-text">{fieldCurrency}</span>
         </div>
 
+
         <input  type={`${fieldType}`} 
                 className="form-control" 
                 name={`${fieldName}`} 
+                disabled={!isBeingEdited}
                 id={`${fieldOwner}-form__${fieldName}`}
                 aria-describedby={`${fieldName}Help`} 
                 placeholder={fieldTexts.placeholder}  
@@ -60,8 +63,11 @@ const EditableFieldGeneral = (props) => {
                 value={content}
                 required={fieldRequired}/>
 
-        <div className="input-group-append">
-          <span className="input-group-text" id={`${fieldName}Help`} ><i className="fas fa-pencil-alt"></i></span>
+
+
+        <div className="input-group-append"
+             onClick={(evt)=>{setIsBeingEdited(isBeingEdited => !isBeingEdited);evt.preventDefault();evt.stopPropagation()}}>
+          <span className="input-group-text" id={`${fieldName}Help`} ><i className={`fas fa-${isBeingEdited?'check':'edit'}`}></i></span>
         </div>
 
 

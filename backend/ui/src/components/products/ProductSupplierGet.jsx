@@ -1,14 +1,19 @@
 import React from 'react';
-
+import EditableFieldText from '../EditableFields/EditableFieldText';
 
 const ProductSupplierGet = (props) => {
+  const isActive = props.active || false
   return ( 
-    <span style={{'opacity':`${props.isHidden?0:1}`}}>
-      <span className='supplierSelection__supplier'>{props.name || 'Unamed Supplier'}:</span> 
-      <span className='supplierSelection__pa-text'>PA</span> 
-      <span className={`supplierSelection__price ${props.special ? 'text-light': 'text-danger'}`}>${props.pa || '9999'}</span> 
-      <span className='supplierSelection__shipping-days'>(Shipping Days: {props.shdays || '20'})</span>
-    </span>
+    <li className={`suppliers__unit ${isActive?'suppliers__unit--active':''}`}>
+      <div className="suppliers__preferred" style={{display:`${isActive?'block':'none'}`}}>Preferred Supplier</div>
+      <div className="suppliers__name"><EditableFieldText/></div>
+      <div className="suppliers__link"><EditableFieldText/></div>
+      <hr/>
+      <div className="suppliers__prices"><EditableFieldText/><EditableFieldText/><EditableFieldText/></div>
+      <hr/>
+      <div className="suppliers__bareshipping"><EditableFieldText/><EditableFieldText/><EditableFieldText/></div>
+      <hr/>
+    </li>
   );
 }
  
