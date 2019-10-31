@@ -3,7 +3,7 @@ import React, {useState} from 'react';
 
 import {reduxStore, reduxLoadProducts} from '../../datastore';
 import ProductList from '../products/ProductList';
-import ProductForm from '../products/ProductForm';
+import ProductForm from '../Form/ProductForm/ProductForm';
 
 
 
@@ -13,7 +13,18 @@ const ProductManager = (props) => {
 
   // Initialize variables
   const [isProductListRetrieved, setIsProductListRetrieved] = useState(false)
-  const [productFormData, setProductFormData] = useState({})
+  const [productFormData, setProductFormData] = useState({
+                                                          id: -1,
+                                                          name: '',
+                                                          category: '',
+                                                          subcategory: '',
+                                                          pref_supplier_id: -1,
+                                                          alias: '',
+                                                          product_suppliers: [],
+                                                          prefered_supplier: {},
+                                                          product_tags: [],
+                                                          product_images: []
+                                                        })
 
 
   

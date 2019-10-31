@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {useRenderDataFromPropsAndLocalChanges} from '../Form/RenderDataFromPropsAndLocalChanges'
+import {useRenderDataFromPropsAndLocalChanges} from '../RenderDataFromPropsAndLocalChanges'
 
 
 const ProductTags = (props) => {

@@ -32,9 +32,13 @@ const EditableFieldGeneral = (props) => {
   const fieldCurrency = props.fieldCurrency
   const fieldRequired = props.fieldRequired || false
 
-  const fieldTexts = {'placeholder':props.fieldTexts.placeholder || `Enter Field Content Here`,'help': props.fieldTexts.help || `Field Name`}
-  const fieldHandleChange = props.handleChange || ((value)=>console.log(`${fieldName} value changed to ${value}`))
-
+  const propsFieldTexts = props.fieldTexts || {}
+  const fieldTexts = {
+    'placeholder': propsFieldTexts.placeholder || `Enter Field Content Here`,
+    'help': propsFieldTexts.help || `Field Name`, 
+    'title': propsFieldTexts.title || propsFieldTexts.placeholder
+  }
+  const fieldHandleChange = props.fieldHandleChange || ((value)=>console.log(`${fieldName} value changed to ${value}`))
 
 
   // Component JSX/HTML code
@@ -57,6 +61,7 @@ const EditableFieldGeneral = (props) => {
                 disabled={!isBeingEdited}
                 id={`${fieldOwner}-form__${fieldName}`}
                 aria-describedby={`${fieldName}Help`} 
+                title={fieldTexts.title}
                 placeholder={fieldTexts.placeholder}  
                 pattern={fieldPattern}  
                 onChange={(evt)=>{setContent(evt.target.value);fieldHandleChange(evt.target.value)}} 

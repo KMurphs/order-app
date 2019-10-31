@@ -101,6 +101,7 @@
     border: 1px solid rgba(0, 0, 0, .1);
     position: relative;
     transition: all .3s;
+    overflow-x: hidden;
 }
 
 .product-supplier-container .suppliers__unit--add {
@@ -127,7 +128,7 @@
     background: rgba(0, 0, 0, 0.1);
 }
 
-.product-supplier-container .suppliers__unit:before {
+.product-supplier-container .suppliers__unit .suppliers__select {
     content: 'Click to Set as Prefered';
     writing-mode: vertical-rl;
     text-orientation: mixed;
@@ -135,7 +136,7 @@
     height: 100%;
     width: 5px;
     top: 0;
-    right: 0;
+    left: 0;
     border: 0px solid rgba(0, 0, 0, .5);
     background: #ccc;
     transition: all .3s;
@@ -146,14 +147,15 @@
     justify-content: center;
     align-items: center;
     font-weight: bold;
+    transform: rotate(180deg);
 }
 
 .product-supplier-container .suppliers__unit:hover {
-    padding-right: 25px;
+    padding-left: 25px;
     transition: all .3s;
 }
 
-.product-supplier-container .suppliers__unit:hover:before {
+.product-supplier-container .suppliers__unit:hover .suppliers__select {
     width: 20px;
     transition: all .3s;
     color: #666;
@@ -169,20 +171,27 @@
 
 .product-supplier-container .suppliers__unit .suppliers__prices {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1.5fr 1.5fr 1fr;
     gap: 2em
 }
 
 .product-supplier-container .suppliers__unit .suppliers__bareshipping {
     margin-top: 1em;
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 2em
 }
 
-.product-supplier-container .suppliers__header-data-container__text {
+.product-supplier-container .suppliers__header-data-container__text,
+.product-supplier-container .suppliers__unit .suppliers__prices--gain {
     color: #aaa;
     font-size: .7em;
+}
+
+.product-supplier-container .suppliers__unit .suppliers__prices--gain {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .product-supplier-container .suppliers__header-data-container div:nth-child(2) {
@@ -194,4 +203,28 @@
 
 .product-supplier-container .suppliers__header-data-container div:nth-child(1) {
     padding-top: .5em;
+}
+
+.product-supplier-container .suppliers__remove {
+    position: absolute;
+    bottom: 0;
+    right: -10px;
+    padding: .5em;
+    background: rgba(255, 0, 0, 0.7);
+    color: white;
+    border-radius: 3px;
+    opacity: 0;
+    transition: all .3s;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.product-supplier-container .suppliers__remove .fas {
+    font-size: 1.2em;
+}
+
+.product-supplier-container .suppliers__unit:hover .suppliers__remove {
+    right: 0;
+    opacity: 1;
+    transition: all .3s;
 }

@@ -45,6 +45,8 @@ module.exports.exposeRoutes = function(app){
 				return
 			}
 
+			console.log(fields)
+
 
 
 			const [imgUploadTempPath, imgTempName] = imgUtilGetTempPathAndNameFromFormidable(files)

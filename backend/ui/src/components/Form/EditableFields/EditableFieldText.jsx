@@ -17,6 +17,7 @@ const EditableFieldText = (props) => {
   // fieldRequired
   // fieldPattern
   // placeholder
+  // title
   // label
   // handleChange
 
@@ -29,7 +30,8 @@ const EditableFieldText = (props) => {
                           fieldPattern={props.fieldPattern}
                           fieldTexts={{
                             'placeholder': props.placeholder,
-                            'help': props.label
+                            'help': props.label,
+                            'title': props.title
                           }}
                           fieldHandleChange={props.handleChange}
                           />

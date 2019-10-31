@@ -9,19 +9,19 @@ const useRenderDataFromPropsAndLocalChanges = function(initialPropsData) {
 
 
 
-    let setRenderDataFromLocalChanges = (_localChanges) => {
+    let modifyRenderDataFromLocalChanges = (_localChanges) => {
         let localChanges = JSON.parse(JSON.stringify(_localChanges || null))
         setUnsavedUpdatedData(localChanges);
         // console.log('Latched local changes:', localChanges)
     }
-    let setRenderDataFromLocalKeyValue = (localChanges, key, value) => {
+    let modifyRenderDataFromLocalKeyValue = (localChanges, key, value) => {
         localChanges[key] = value;
-        setRenderDataFromLocalChanges(localChanges)
+        modifyRenderDataFromLocalChanges(localChanges)
     }
 
 
 
-    let getRenderDataFromCurrentProps = (_currentPropsData) => {
+    let getRenderDataUsingPropsOrLocalChanges = (_currentPropsData) => {
 
         let currentPropsData = JSON.parse(JSON.stringify(_currentPropsData || null))
         let dataWillBeUsedForRender = currentPropsData || (getObjectCopyWithDefaultValues(currentPropsData))
@@ -44,7 +44,7 @@ const useRenderDataFromPropsAndLocalChanges = function(initialPropsData) {
 
 
 
-    return [getRenderDataFromCurrentProps, setRenderDataFromLocalChanges, setRenderDataFromLocalKeyValue]
+    return [getRenderDataUsingPropsOrLocalChanges, modifyRenderDataFromLocalChanges, modifyRenderDataFromLocalKeyValue]
 }
 
 

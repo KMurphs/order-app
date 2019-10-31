@@ -32,7 +32,8 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    right: -2.5em;
+    /* right: -2.5em; */
+    right: 0em;
     background: none;
     opacity: 0;
     z-index: 100;
@@ -50,7 +51,6 @@
     position: absolute;
     height: 2px;
     width: 100%;
-    /* background: var(--blue); */
     background: rgba(0, 0, 255, .5);
     bottom: 0;
     left: 0;
@@ -69,8 +69,23 @@
     transition: all .3s;
 }
 
+.input-group-no-borders--editable .input-group-append .input-group-text {
+    animation: glow .8s linear 0s infinite alternate;
+}
+
 .input-group-no-borders--editable:hover .input-group-prepend .input-group-text,
 .input-group-no-borders--editable:hover .input-group-append .input-group-text {
     background: rgba(255, 255, 255, .5);
     transition: all .3s;
+}
+
+@keyframes glow {
+    0% {
+        box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.2);
+        background: inherit;
+    }
+    100% {
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+        background: rgba(127, 25, 25, 0.2);
+    }
 }
