@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {reduxStore, reduxLoadClients} from '../../datastore';
+import {reduxGetClients} from '../../datastore';
 import ClientList from './ClientList';
 import ClientForm from '../Form/OrderAppForm';
 
@@ -15,18 +15,8 @@ const ClientsManager = (props) => {
 
   // Get Client List if not already present 
   if(!isClientListRetrieved){
-    
-    (new window.XmlHttpRequest()).getData(`${process.env.REACT_APP_BASE_URL}/api/clients`, {})
-    .then((res) => {
-      res.forEach(item => {
-        item.img_path = `${process.env.REACT_APP_BASE_URL}${item.img_path.replace(/\\\\/g,'/')}`
-        item.address = item.shipping_address
-      })
-      reduxStore.dispatch(reduxLoadClients(res)); // store retrieved client data
-      setIsClientListRetrieved(true); // Force a re-render with retrieved client data
-    })
-    .catch((err) => console.log(err))
-
+    reduxGetClients()
+    .then((res) => setIsClientListRetrieved(true)) // Force a re-render with retrieved client data
   }
 
 
@@ -36,7 +26,7 @@ const ClientsManager = (props) => {
   return ( 
     <div className="container-fluid container-page d-flex flex-column flex-md-row justify-content-start justify-content-md-space-around align-items-stretch align-items-md-start">
       <React.Fragment>
-        <ClientList list={reduxStore.getState().clients || {}} onSelectionChange={newSelectedClient => setClientFormData(newSelectedClient)}/>
+        <ClientList list={reduxGetClients() || {}} onSelectionChange={newSelectedClient => setClientFormData(newSelectedClient)}/>
         <ClientForm formData={clientFormData} 
                     formType='client' 
                     appIsOnline={props.isOnline} 

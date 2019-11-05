@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 
-import {reduxStore, reduxLoadProducts} from '../../datastore';
+import {reduxGetProducts, reduxGetSuppliers} from '../../datastore';
 import ProductList from '../products/ProductList';
 import ProductForm from '../Form/ProductForm/ProductForm';
 
@@ -31,20 +31,12 @@ const ProductManager = (props) => {
 
   // Get Product List if not already present 
   if(!isProductListRetrieved){
-    
-    (new window.XmlHttpRequest()).getData(`${process.env.REACT_APP_BASE_URL}/api/products`, {})
-    .then((res) => {
-      let newRes = res.map(item => {
-                            item.product_data.product_images.forEach(img => img = `${process.env.REACT_APP_BASE_URL}${img.replace(/\\\\/g,'/')}`)
-                            return item.product_data
-                          })
-      reduxStore.dispatch(reduxLoadProducts(newRes)); // store retrieved Product data
-      setIsProductListRetrieved(true); // Force a re-render with retrieved Product data
-      // console.log(reduxStore.getState().products)
-    })
-    .catch((err) => console.log(err))
-
+    reduxGetProducts()
+    .then((res)=>setIsProductListRetrieved(true)) // Force a re-render with retrieved Product data
+      
+    reduxGetSuppliers() // Just ensures that when we need it, the suppliers are already loaded from the backend
   }
+
 
   
 
@@ -52,9 +44,10 @@ const ProductManager = (props) => {
   return ( 
     <div className="container-fluid container-page d-flex flex-column flex-md-row justify-content-start justify-content-md-space-around align-items-stretch align-items-md-start">
       <React.Fragment>
-        <ProductList list={reduxStore.getState().products || {}} onSelectionChange={newSelectedProduct => setProductFormData(newSelectedProduct)}/>
+        <ProductList list={reduxGetProducts() || {}} onSelectionChange={newSelectedProduct => setProductFormData(newSelectedProduct)}/>
         <ProductForm formData={productFormData} 
                      appIsOnline={props.isOnline} 
+                     onGetSuppliersLike={(value)=>Object.values(reduxGetSuppliers()).map(item => getSupplierDisplayNames(item.surname, item.firstnames, item.storename))} 
                      onSubmit={()=>{ setIsProductListRetrieved(false); window.location.reload();}}/>
       </React.Fragment>
     </div>
@@ -62,3 +55,18 @@ const ProductManager = (props) => {
 }
  
 export default ProductManager;
+
+const getSupplierDisplayNames = (surname, firstnames, storename) => {
+  let displayName = ''
+
+  if(surname)displayName = `${displayName}${surname} `
+  if(firstnames)displayName = `${displayName}${firstnames} `
+
+  if(surname || firstnames){
+    if(storename)displayName = `${displayName}${firstnames} - (${storename})`
+  }else{
+    if(storename)displayName = `${storename}`
+  }
+  
+  return displayName
+}

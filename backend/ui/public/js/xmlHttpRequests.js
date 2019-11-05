@@ -59,6 +59,9 @@ XmlHttpRequest.prototype.handleFormData = function(method, url, data, requestHea
 
 XmlHttpRequest.prototype.postFormData = function(url, htmlForm) {
     let formData = new FormData(htmlForm);
+    for (let item of formData) {
+        console.log(item)
+    }
     return this.handleFormData('post', url, formData)
 }
 XmlHttpRequest.prototype.postData = function(url, data) {

@@ -38,7 +38,9 @@ module.exports.exposeRoutes = function(app){
 
 	app.post('/products', (req, res) => {
 
-		const form = new formidable.IncomingForm()
+		let form = new formidable.IncomingForm()
+		form.multiples = true; // per their documents
+		
 		form.parse(req, async(err, fields, files) => {
 			if(err){
 				console.log('Error parsing incoming form: ', err)
@@ -46,6 +48,7 @@ module.exports.exposeRoutes = function(app){
 			}
 
 			console.log(fields)
+			console.log(files)
 
 
 
@@ -59,7 +62,7 @@ module.exports.exposeRoutes = function(app){
 
 
 
-			model.products_add_one(fields.storename, fields.surname, fields.firstnames, fields.website, fields.email.split('::'), fields.phone.split('::'), `/imgs/${imgCurrentAbsDir.replace(serverData.imgBaseDir, '')}`, imgTempName, fields.country, fields.address, fields.address)
+			model.products_add_one(fields['product-name'], fields['product-alias'], fields['product-category'], fields['product-subcategory'], fields.tags, fields.suppliers, fields.pref_supplier_id, [`/imgs/${imgCurrentAbsDir.replace(serverData.imgBaseDir, '')}`], [imgTempName])
 			.then((data)=>{ 
 				
 				console.log('Insterted Item: ', data)

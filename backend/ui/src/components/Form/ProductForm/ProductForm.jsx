@@ -33,7 +33,7 @@ const ProductForm = (props) => {
   const [getRenderDataUsingPropsOrLocalChanges, modifyRenderDataFromLocalChanges, modifyRenderDataFromLocalKeyValue] = useRenderDataFromPropsAndLocalChanges(propsFormData)
   let renderData = getRenderDataUsingPropsOrLocalChanges(propsFormData)
 
-
+  const propsOnGetSuppliersLike = props.onGetSuppliersLike// || ((value)=>{console.log(`Trying to get suppliers that are like ${value}`); return []})
 
   return ( 
     <form className={`order-app-form ${formType}-form`}
@@ -45,9 +45,9 @@ const ProductForm = (props) => {
       <h3 className="display-4">{formType.charAt(0).toUpperCase() + formType.slice(1)} Details</h3>
       <br/>
       
-      <EditableFieldTest/>
 
-      
+
+
       <div className="container-fluid">
 
 
@@ -56,7 +56,7 @@ const ProductForm = (props) => {
             <div>
               <FormGroupProfilePic formType={formType} 
                                    formData={{img_path: displayedPicture}}
-                                   formHidden={{'input': true}}
+                                   formHidden={{'input': false}}
                                    onValueChange={(owningKey, newValue) => modifyRenderDataFromLocalKeyValue(renderData, owningKey, newValue)}/>
             </div>
             {/* <div style={{'maxWidth': '120px'}}>
@@ -68,11 +68,14 @@ const ProductForm = (props) => {
         </div>
 
         
+
         <div className="container">
           <PicturePreviewSwiper pictures={renderData.product_images}
                                 onNewSelection={(selectedPicture) => setDisplayedPicture(selectedPicture)}
                                 onNewPicture={(pictures, lastPicture) => {setDisplayedPicture(lastPicture); modifyRenderDataFromLocalKeyValue(renderData, 'product_images', pictures)}}/>
         </div>
+
+
 
         <div className="container product-supplier-container">
           <br/>
@@ -83,6 +86,7 @@ const ProductForm = (props) => {
                             onNewSupplier={()=>modifyRenderDataFromLocalKeyValue(renderData, 'product_suppliers', [...renderData.product_suppliers,{}])}
                             onSupplierDeleted={(supplierIndex)=>modifyRenderDataFromLocalKeyValue(renderData, 'product_suppliers', renderData.filter((item, index)=>index!==supplierIndex))}
                             onSupplierPrefered={(supplierIndex)=>modifyRenderDataFromLocalKeyValue(renderData, 'prefered_supplier', renderData.product_suppliers[supplierIndex])}
+                            onGetSuppliersLike={(value)=>propsOnGetSuppliersLike(value)}
                             onSupplierFieldChange={(supplierIndex, owningKey, newValue) => {
                               renderData.product_suppliers[supplierIndex][owningKey] = newValue
                               modifyRenderDataFromLocalKeyValue(renderData, 'product_suppliers', renderData.product_suppliers)
@@ -91,6 +95,7 @@ const ProductForm = (props) => {
         </div>
 
  
+
         <div className="container">
           <div className='container-fluid'>
             <EditableFieldText  fieldOwner='product'
@@ -125,11 +130,13 @@ const ProductForm = (props) => {
         </div>
 
 
+
         <div className="container">
           <ProductTags tags={renderData.product_tags} 
                        onNewTags={(newTags) => modifyRenderDataFromLocalKeyValue(renderData, 'tags', newTags)}/>
           <button type="submit" className="btn btn-primary btn-block" disabled={!appIsOnline}>Submit</button>
         </div> 
+
 
 
       </div>
@@ -140,12 +147,23 @@ const ProductForm = (props) => {
 export default ProductForm;
 
 
+
+
+
 export function handleSubmit(evt, data, type){
   evt.preventDefault();
   console.log(data)
-  
+
+
+  let formData = new FormData(evt.target);
+  for(let img of data.product_images){
+    console.log(img)
+    formData.append('files', img)
+  }
+
+
   return new Promise((resolve, reject) => {
-    if(data.id){
+    if(data.id && data.id > 0){
 
       console.info(`Updating ${type} data with id ${data.id}`);
       (new window.XmlHttpRequest()).putFormData(`${evt.target.getAttribute('action')}/${data.id}`, evt.target)
@@ -155,7 +173,7 @@ export function handleSubmit(evt, data, type){
     }else{
 
       console.info(`Uploading new ${type} data`);
-      (new window.XmlHttpRequest()).postFormData(evt.target.getAttribute('action'), evt.target)
+      (new window.XmlHttpRequest()).handleFormData('post', evt.target.getAttribute('action'), formData)
       .then((res)=>resolve(res))
       .catch((err)=>reject(err))
 

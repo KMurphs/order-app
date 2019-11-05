@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ProductSupplierGet from './ProductSupplierGet'
-import {useRenderDataFromPropsAndLocalChanges} from '../RenderDataFromPropsAndLocalChanges'
+// import {useRenderDataFromPropsAndLocalChanges} from '../RenderDataFromPropsAndLocalChanges'
 
 import './ProductSuppliers.css'
 
@@ -15,6 +15,7 @@ const ProductSuppliers = (props) => {
   const propsOnNewSupplier = props.onNewSupplier || (()=>{console.log(`Request for new supplier New Supplier`)})
   const propsOnSupplierDeleted = props.onSupplierDeleted || ((index)=>{console.log(`Supplier at index ${index} was deleted`)})
   const propsOnSupplierPrefered = props.onSupplierPrefered || ((index)=>{console.log(`Supplier at index ${index} was selected as preferred supplier`)})
+  const propsOnGetSuppliersLike = props.onGetSuppliersLike || ((value)=>{console.log(`Trying to get suppliers that are like ${value}`); return []})
   const propsOnSupplierFieldChange = props.onSupplierFieldChange || ((key, value)=>{console.log(`Supplier Field of key ${key} was changed to value ${value}`)})
 
 
@@ -59,6 +60,7 @@ const ProductSuppliers = (props) => {
                                                           onFieldChange={(owningKey, newValue)=>propsOnSupplierFieldChange(index, owningKey, newValue)}
                                                           onSelect={propsOnSupplierPrefered}
                                                           onDelete={propsOnSupplierDeleted}
+                                                          getSuppliersLike={propsOnGetSuppliersLike}
                                                           />
                 )
               }

@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 
 import EditableFieldText from './EditableFieldText';
 import EditableFieldPhone from './EditableFieldPhone';
 import EditableFieldCurrency from './EditableFieldCurrency';
-import EditableFieldGeneralWithAutoComplete from './EditableFieldGeneral_WithAutoComplete';
+import EditableFieldTextWithAutoComplete from './EditableFieldTextWithAutoComplete';
 
 
 
@@ -15,7 +15,7 @@ const EditableFieldTest = (props) => {
         <EditableFieldText/>
         <EditableFieldPhone/>
         <EditableFieldCurrency/>
-        <EditableFieldGeneralWithAutoComplete/>
+        <EditableFieldTextWithAutoComplete/>
       </div>
   );
 }

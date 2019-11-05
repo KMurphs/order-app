@@ -1,5 +1,7 @@
 import React from 'react';
 import EditableFieldText from '../EditableFields/EditableFieldText';
+import EditableFieldCurrency from '../EditableFields/EditableFieldCurrency';
+import EditableFieldTextWithAutoComplete from '../EditableFields/EditableFieldTextWithAutoComplete';
 
 const ProductSupplierGet = (props) => {
 
@@ -12,19 +14,20 @@ const ProductSupplierGet = (props) => {
   const onFieldChange = props.onFieldChange || ((key, value)=>{console.log(`Element with key ${key} got new value ${value}`)})
   const onSelect = props.onSelect || ((elmtPropsKey)=>{console.log(`Supplier ${renderData.name} is selected as preferred supplier`)})
   const onDelete = props.onDelete || ((elmtPropsKey)=>{console.log(`Supplier ${renderData.name} is deleted`)})
+  const getSuppliersLike = props.getSuppliersLike || ((value)=>{console.log(`Trying to get suppliers that are like ${value}`); return []})
 
 
   return ( 
     <li className={`suppliers__unit ${isActive?'suppliers__unit--active':''}`}>
       <div className="suppliers__preferred" style={{display:`${isActive?'block':'none'}`}}>Preferred Supplier</div>
       <div className="suppliers__name">
-        <EditableFieldText  fieldOwner='product'
-                                  fieldName='supplier-name'
-                                  initialValue={renderData.name}
-                                  fieldRequired={true}
-                                  placeholder='Enter Supplier Name'
-                                  label='Supplier Name'
-                                  handleChange={(newValue)=>onFieldChange('name', newValue)}/>
+        <EditableFieldTextWithAutoComplete  fieldOwner='product'
+                                            fieldName='supplier-name'
+                                            fieldRequired={true}
+                                            placeholder='Enter Supplier Name'
+                                            label='Supplier Name'
+                                            handleChange={(newValue)=>onFieldChange('name', newValue)}
+                                            getAutoCompleteData={(value)=>getSuppliersLike(value)}/>
       </div>
       <div className="suppliers__link">
         <EditableFieldText  fieldOwner='product'
@@ -37,7 +40,7 @@ const ProductSupplierGet = (props) => {
       </div>
       <hr/>
       <div className="suppliers__prices">
-        <EditableFieldText  fieldOwner='product'
+        <EditableFieldCurrency  fieldOwner='product'
                                       fieldName='supplier-pa'
                                       initialValue={renderData.pa}
                                       fieldRequired={true}
@@ -45,7 +48,7 @@ const ProductSupplierGet = (props) => {
                                       title={`Cost of Buying from Supplier`}
                                       label={`'Prix d'Achat'`}
                                       handleChange={(newValue)=>onFieldChange('pa', newValue)}/>
-        <EditableFieldText  fieldOwner='product'
+        <EditableFieldCurrency  fieldOwner='product'
                                       fieldName='supplier-pv'
                                       initialValue={renderData.pv}
                                       fieldRequired={true}
@@ -60,14 +63,14 @@ const ProductSupplierGet = (props) => {
       </div>
       <hr/>
       <div className="suppliers__bareshipping">
-        <EditableFieldText  fieldOwner='product'
+        <EditableFieldCurrency  fieldOwner='product'
                                       fieldName='supplier-shipping-duration'
                                       initialValue={renderData.shippingDuration}
                                       fieldRequired={true}
                                       placeholder={`Shipping Days`}
                                       label={`Shipping Duration`}
                                       handleChange={(newValue)=>onFieldChange('shippingDuration', newValue)}/>  
-        <EditableFieldText  fieldOwner='product'
+        <EditableFieldCurrency  fieldOwner='product'
                                       fieldName='supplier-itembarecost'
                                       initialValue={renderData.itembarecost}
                                       fieldRequired={true}
@@ -75,7 +78,7 @@ const ProductSupplierGet = (props) => {
                                       title={`Price of one item without Shipping`}
                                       label={`Item Bare Cost`}
                                       handleChange={(newValue)=>onFieldChange('itembarecost', newValue)}/>
-        <EditableFieldText  fieldOwner='product'
+        <EditableFieldCurrency  fieldOwner='product'
                                       fieldName='supplier-shippingbarecost'
                                       initialValue={renderData.shippingbarecost}
                                       fieldRequired={true}

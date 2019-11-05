@@ -26,7 +26,7 @@ app.get("/imgs/*", (req, res) => {
 
 	fs.copyFile(imgSrcPath, imgDestPath, (err) => {
 	  if (err) res.redirect("/dbImgsCache/NoImage.png");
-	  res.redirect(`/dbImgsCache/${imgFile}`)
+	  else res.redirect(`/dbImgsCache/${imgFile}`)
 	});
 
 })

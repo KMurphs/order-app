@@ -35,7 +35,7 @@ const PicturePreviewSwiper = (props) => {
           {
             getRenderImgPathFromCurrentProps(initialPictures).map((item, index) => 
               <div key={index} className='picture-preview-slider-element-slide' onClick={()=>props.onNewSelection(item)}>
-                <img src={/^data:image/.test(item) || /^data:image/.test('imgs/') ? item : defaultPicture} alt={`swiper picture ${index}`} className="img-thumbnail picture-preview-slider__picture"/>
+                <img src={/^data:image/.test(item) || /^data:image/.test('imgs/') ? item : defaultPicture} alt={`swiper item ${index}`} className="img-thumbnail picture-preview-slider__picture"/>
               </div>
             )
           }
@@ -46,21 +46,42 @@ const PicturePreviewSwiper = (props) => {
       <div className="picture-preview-add" style={{'display': `${formHidden.addBtn?'none':'inline-block'}`}}>
         <label htmlFor={`picture-preview-swiper__upload${addInputID}`} className="btn btn-outline-light"><i className="fas fa-plus"></i></label>
         <input type="file" 
+                 multiple
                  style={{'display':'none'}}
                  className="custom-file-input" 
                  id={`picture-preview-swiper__upload${addInputID}`}
-                 name="img_path" 
-                 aria-describedby="supplier-form__upload" 
+                 name="picture-preview-swiper-img_paths" 
+                 aria-describedby={`picture-preview-swiper-form__upload${addInputID}`} 
                  onChange={(inputFile)=> {
                      if(inputFile.target.files && inputFile.target.files[0]){
-                      var reader = new FileReader();
-                      reader.onload = (e) => {
-                        if(/^data:image/.test(e.target.result)){
-                          setRenderImgPathFromLocalChanges([e.target.result, ...getRenderImgPathFromCurrentProps(initialPictures).filter(img => img !== defaultPicture)])
-                          props.onNewPicture([e.target.result,...getRenderImgPathFromCurrentProps(initialPictures)], e.target.result)
-                        }
+
+                      let promises = []
+
+                      const readFile = (file)=>{
+                          return new Promise((resolve, reject) => {
+                            var reader = new FileReader();
+                            reader.onload = (e) => {
+                              if(/^data:image/.test(e.target.result)){
+                                console.log('Valid Image')
+                                resolve(e.target.result)
+
+                              }
+                            }
+                            reader.readAsDataURL(file)
+                          })
                       }
-                      reader.readAsDataURL(inputFile.target.files[0]);  
+
+                      for(let file of inputFile.target.files){
+                        promises.push(readFile(file))
+                        console.log('Done')
+                      }
+
+                      Promise.all(promises)
+                      .then((results) => {
+                        setRenderImgPathFromLocalChanges([...results, ...getRenderImgPathFromCurrentProps(initialPictures).filter(img => img !== defaultPicture)])
+                        props.onNewPicture([...results,...getRenderImgPathFromCurrentProps(initialPictures)], results[results.length - 1])
+                      })
+
                      } 
                  }}/>
       </div>

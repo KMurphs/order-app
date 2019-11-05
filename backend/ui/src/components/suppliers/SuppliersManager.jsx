@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-import {reduxStore, reduxLoadSuppliers} from '../../datastore';
+import {reduxGetSuppliers} from '../../datastore';
 import SupplierList from './SupplierList';
 import SupplierForm from '../Form/OrderAppForm';
 
@@ -15,18 +15,8 @@ const SupplierManager = (props) => {
 
   // Get Supplier List if not already present 
   if(!isSupplierListRetrieved){
-    
-    (new window.XmlHttpRequest()).getData(`${process.env.REACT_APP_BASE_URL}/api/suppliers`, {})
-    .then((res) => {
-      res.forEach(item => {
-        item.img_path = `${process.env.REACT_APP_BASE_URL}${item.img_path.replace(/\\\\/g,'/')}`
-        item.address = item.office_address
-      })
-      reduxStore.dispatch(reduxLoadSuppliers(res)); // store retrieved Supplier data
-      setIsSupplierListRetrieved(true); // Force a re-render with retrieved Supplier data
-    })
-    .catch((err) => console.log(err))
-
+    reduxGetSuppliers()
+    .then((res) => setIsSupplierListRetrieved(true)) // Force a re-render with retrieved Supplier data
   }
 
 
@@ -36,7 +26,7 @@ const SupplierManager = (props) => {
   return ( 
     <div className="container-fluid container-page d-flex flex-column flex-md-row justify-content-start justify-content-md-space-around align-items-stretch align-items-md-start">
       <React.Fragment>
-        <SupplierList list={reduxStore.getState().suppliers || {}} onSelectionChange={newSelectedSupplier => setSupplierFormData(newSelectedSupplier)}/>
+        <SupplierList list={reduxGetSuppliers() || {}} onSelectionChange={newSelectedSupplier => setSupplierFormData(newSelectedSupplier)}/>
         <SupplierForm formData={supplierFormData} 
                     formType='supplier' 
                     formHidden={{}} 
